@@ -1,6 +1,7 @@
 'use strict';
 
 const alignmentErr = new ReferenceError('Sorry, that is not a valid alignment');
+const aDie = require('d20');
 
 class Character {
 
@@ -25,8 +26,15 @@ class Character {
 
     get armorClass() {
         return 10;
-    }
+    };
     
+    get hitPoints() {
+        return 5;
+    };
+
+    get rollForAttack() {
+        return aDie.roll(20);
+    }
 
 
 
