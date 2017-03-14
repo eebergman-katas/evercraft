@@ -1,6 +1,7 @@
 {
     "parserOptions": {
-        "ecmaVersion": 6
+        "ecmaVersion": 6,
+        "sourceType": "module"
     },
     "env": {
         "node": true
@@ -9,8 +10,10 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "require-jsdoc" : 0
     },
+    
     "module.exports": {
         "extends": "google"
     }
