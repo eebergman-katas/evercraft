@@ -1,8 +1,7 @@
 const expect = require('chai').expect;
-const sinon = require('sinon');
 const app = require('../src/app');
 
-let Character = require('../src/app');
+let Character = require('../src/character');
 
 describe('App', () => {
     it('should return true if app.js exists', () => {
@@ -37,26 +36,28 @@ describe('Character Creation', () => {
 });
 
 describe('Character has properties and actions', () => {
-    let someNewChar;
+    let ourHero,
+        ourEnemy;
 
     beforeEach(() => {
-        someNewChar = new Character('Loni', 'Good');
+        ourHero = new Character('Loni', 'Good');
+        ourEnemy = new Character ('Theo', 'Evil');
     });
 
     describe('Armor Class and Hit points', () => {
         it('should return 10 when asked for the armor class value', () => {
-            expect(someNewChar.armorClass).to.equal(10);
+            expect(ourHero.armorClass).to.equal(10);
         });
 
         it('should have a starting amount of 5 hit points', () => {
-            expect(someNewChar.hitPoints).to.equal(5);
+            expect(ourHero.hitPoints).to.equal(5);
         });
     });
 
     describe('Character can Attack', () => {
         it('should allow the character to roll a d20', () => {
-            expect(someNewChar.rollForAttack).to.be.within(0,20);
-        })
+            expect(ourHero.rollForAttack).to.be.within(0, 20);
+        });
 
     });
 });

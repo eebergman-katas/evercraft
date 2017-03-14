@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 42);
+/******/ 	return __webpack_require__(__webpack_require__.s = 44);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -177,18 +177,26 @@ module.exports = {
 "use strict";
 
 
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var alignmentErr = new ReferenceError('Sorry, that is not a valid alignment');
+var aDie = __webpack_require__(5);
 
 var Character = function () {
     function Character(name, alignment) {
         _classCallCheck(this, Character);
 
         this.name = name;
-        this._alignment = alignment;
+        this.alignment = alignment;
     }
 
     _createClass(Character, [{
@@ -197,14 +205,28 @@ var Character = function () {
             return this._alignment;
         },
         set: function set(value) {
-            var validAlignments = ['bad', 'good', 'neutral'];
-            var localAlignment = String(value).toLowerCase();
+            var validAlignments = ['good', 'bad', 'neutral'];
+            var localAlignment = String(value);
 
-            if (!validAlignments.includes(localAlignment)) {
-                throw alignmentErr.message;
-            };
-
+            if (!validAlignments.includes(localAlignment.toLocaleLowerCase())) {
+                throw new ReferenceError('Sorry, that is not a valid alignment');
+            }
             this._alignment = value;
+        }
+    }, {
+        key: 'armorClass',
+        get: function get() {
+            return 10;
+        }
+    }, {
+        key: 'hitPoints',
+        get: function get() {
+            return 5;
+        }
+    }, {
+        key: 'rollForAttack',
+        get: function get() {
+            return aDie.roll(20);
         }
     }]);
 
@@ -216,7 +238,7 @@ var Character = function () {
 module.exports = Character;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -227,9 +249,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 // This is (almost) directly from Node.js utils
 // https://github.com/joyent/node/blob/f8c335d0caf47f16d31413f89aa28eda3878e3aa/lib/util.js
 
-var getName = __webpack_require__(7);
-var getProperties = __webpack_require__(26);
-var getEnumerableProperties = __webpack_require__(23);
+var getName = __webpack_require__(9);
+var getProperties = __webpack_require__(28);
+var getEnumerableProperties = __webpack_require__(25);
 
 module.exports = inspect;
 
@@ -541,16 +563,134 @@ function objectToString(o) {
 }
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(36);
+/**
+ * d20.js
+ *
+ * Javascript library for rolling dice. Supports strings written in a dice-rolling syntax, eg. "d20", "4d6", "1d8+1".
+ *
+ * @author Michael Enger <mike@thelonelycoder.com>
+ * @licence MIT
+ */
+(function () {
+	"use strict";
+
+	var d20 = {
+
+		/**
+   * Roll a number of dice and return the result.
+   *
+   * @param dice Type of dice to roll, can be represented in various formats:
+   *               - a number (6, 12, 42)
+   *               - dice syntax (d20, 4d6, 2d8+2)
+   * @param verbose Whether or not all dice rolls should be returned as an array
+   * @return Number|Array
+   */
+		roll: function roll(dice, verbose) {
+			var result = d20.verboseRoll(dice),
+			    num = 0;
+
+			if (verbose) {
+				return result;
+			} else {
+				for (var i in result) {
+					num += result[i];
+				}
+
+				return num;
+			}
+		},
+
+		/**
+   * Roll a number of dice and return the result as an array.
+   *
+   * @param dice Type of dice to roll, can be represented in various formats:
+   *               - a number (6, 12, 42)
+   *               - dice syntax (d20, 4d6, 2d8+2)
+   * @return Array
+   */
+		verboseRoll: function verboseRoll(dice) {
+			var amount = 1,
+			    mod = 0,
+			    results = [],
+			    match,
+			    num,
+			    modifiers;
+
+			if (!dice) {
+				throw new Error('Missing dice parameter.');
+			}
+
+			if (typeof dice == 'string') {
+				match = dice.match(/^\s*(\d+)?\s*d\s*(\d+)\s*(.*?)\s*$/);
+				if (match) {
+					if (match[1]) {
+						amount = parseInt(match[1]);
+					}
+					if (match[2]) {
+						dice = parseInt(match[2]);
+					}
+					if (match[3]) {
+						modifiers = match[3].match(/([+-]\s*\d+)/g);
+						for (var i = 0; i < modifiers.length; i++) {
+							mod += parseInt(modifiers[i].replace(/\s/g, ''));
+						}
+					}
+				} else {
+					parseInt(dice);
+				}
+			}
+
+			if (isNaN(dice)) {
+				return [];
+			}
+
+			for (var i = 0; i < amount; i++) {
+				/* We dont want to ruin verbose, so we dont skip the for loop */
+				if (dice !== 0) {
+					num = Math.floor(Math.random() * dice + 1);
+				} else {
+					num = 0;
+				}
+				results.push(num);
+			}
+
+			results = results.sort(function (a, b) {
+				return a - b;
+			});
+			if (mod != 0) {
+				results.push(mod);
+			}
+
+			return results;
+		}
+	};
+
+	if (typeof window != 'undefined') {
+		window.d20 = d20;
+	} else if (true) {
+		for (var k in d20) {
+			exports[k] = d20[k];
+		}
+	}
+})();
 
 /***/ }),
-/* 5 */
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(38);
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -674,7 +814,7 @@ AssertionError.prototype.toJSON = function (stack) {
 };
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -702,7 +842,7 @@ module.exports = function (obj, args) {
 };
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -732,7 +872,7 @@ module.exports = function (func) {
 };
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -744,7 +884,7 @@ module.exports = function (func) {
  * MIT Licensed
  */
 
-var hasProperty = __webpack_require__(9);
+var hasProperty = __webpack_require__(11);
 
 /**
  * ### .getPathInfo(path, object)
@@ -845,7 +985,7 @@ function _getPathValue(parsed, obj, index) {
 }
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -859,7 +999,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * MIT Licensed
  */
 
-var type = __webpack_require__(4);
+var type = __webpack_require__(6);
 
 /**
  * ### .hasProperty(object, name)
@@ -917,7 +1057,7 @@ module.exports = function hasProperty(name, obj) {
 };
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -933,7 +1073,7 @@ module.exports = function hasProperty(name, obj) {
  * Module dependancies
  */
 
-var inspect = __webpack_require__(3);
+var inspect = __webpack_require__(4);
 var config = __webpack_require__(1);
 
 /**
@@ -971,7 +1111,7 @@ module.exports = function (obj) {
 };
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1023,16 +1163,16 @@ module.exports = function (assertion, object, includeAll) {
 };
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(13);
+module.exports = __webpack_require__(15);
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1057,13 +1197,13 @@ _exports.version = '3.5.0';
  * Assertion Error
  */
 
-_exports.AssertionError = __webpack_require__(5);
+_exports.AssertionError = __webpack_require__(7);
 
 /*!
  * Utils for plugins (not exported)
  */
 
-var util = __webpack_require__(27);
+var util = __webpack_require__(29);
 
 /**
  * # .use(function)
@@ -1101,39 +1241,39 @@ _exports.config = config;
  * Primary `Assertion` prototype
  */
 
-var assertion = __webpack_require__(14);
+var assertion = __webpack_require__(16);
 _exports.use(assertion);
 
 /*!
  * Core Assertions
  */
 
-var core = __webpack_require__(15);
+var core = __webpack_require__(17);
 _exports.use(core);
 
 /*!
  * Expect interface
  */
 
-var expect = __webpack_require__(17);
+var expect = __webpack_require__(19);
 _exports.use(expect);
 
 /*!
  * Should interface
  */
 
-var should = __webpack_require__(18);
+var should = __webpack_require__(20);
 _exports.use(should);
 
 /*!
  * Assert interface
  */
 
-var assert = __webpack_require__(16);
+var assert = __webpack_require__(18);
 _exports.use(assert);
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1271,7 +1411,7 @@ module.exports = function (_chai, util) {
 };
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2880,7 +3020,7 @@ module.exports = function (chai, _) {
 };
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4503,7 +4643,7 @@ module.exports = function (chai, util) {
 };
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4545,7 +4685,7 @@ module.exports = function (chai, util) {
 };
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4754,7 +4894,7 @@ module.exports = function (chai, util) {
 };
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4770,7 +4910,7 @@ module.exports = function (chai, util) {
  * Module dependencies
  */
 
-var transferFlags = __webpack_require__(11);
+var transferFlags = __webpack_require__(13);
 var flag = __webpack_require__(0);
 var config = __webpack_require__(1);
 
@@ -4872,7 +5012,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 };
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4923,7 +5063,7 @@ module.exports = function (ctx, name, method) {
 };
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4977,7 +5117,7 @@ module.exports = function (ctx, name, getter) {
 };
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5003,9 +5143,9 @@ module.exports = function (ctx, name, getter) {
  * @api public
  */
 
-var AssertionError = __webpack_require__(5);
+var AssertionError = __webpack_require__(7);
 var flag = __webpack_require__(0);
-var type = __webpack_require__(4);
+var type = __webpack_require__(6);
 
 module.exports = function (obj, types) {
   var obj = flag(obj, 'object');
@@ -5029,7 +5169,7 @@ module.exports = function (obj, types) {
 };
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5063,7 +5203,7 @@ module.exports = function getEnumerableProperties(object) {
 };
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5080,9 +5220,9 @@ module.exports = function getEnumerableProperties(object) {
  */
 
 var flag = __webpack_require__(0),
-    getActual = __webpack_require__(6),
-    inspect = __webpack_require__(3),
-    objDisplay = __webpack_require__(10);
+    getActual = __webpack_require__(8),
+    inspect = __webpack_require__(4),
+    objDisplay = __webpack_require__(12);
 
 /**
  * ### .getMessage(object, message, negateMessage)
@@ -5125,7 +5265,7 @@ module.exports = function (obj, args) {
 };
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5138,7 +5278,7 @@ module.exports = function (obj, args) {
  * MIT Licensed
  */
 
-var getPathInfo = __webpack_require__(8);
+var getPathInfo = __webpack_require__(10);
 
 /**
  * ### .getPathValue(path, object)
@@ -5176,7 +5316,7 @@ module.exports = function (path, obj) {
 };
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5220,7 +5360,7 @@ module.exports = function getProperties(object) {
 };
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5242,42 +5382,42 @@ var _exports = module.exports = {};
  * test utility
  */
 
-_exports.test = __webpack_require__(31);
+_exports.test = __webpack_require__(33);
 
 /*!
  * type utility
  */
 
-_exports.type = __webpack_require__(4);
+_exports.type = __webpack_require__(6);
 
 /*!
  * expectTypes utility
  */
-_exports.expectTypes = __webpack_require__(22);
+_exports.expectTypes = __webpack_require__(24);
 
 /*!
  * message utility
  */
 
-_exports.getMessage = __webpack_require__(24);
+_exports.getMessage = __webpack_require__(26);
 
 /*!
  * actual utility
  */
 
-_exports.getActual = __webpack_require__(6);
+_exports.getActual = __webpack_require__(8);
 
 /*!
  * Inspect util
  */
 
-_exports.inspect = __webpack_require__(3);
+_exports.inspect = __webpack_require__(4);
 
 /*!
  * Object Display util
  */
 
-_exports.objDisplay = __webpack_require__(10);
+_exports.objDisplay = __webpack_require__(12);
 
 /*!
  * Flag utility
@@ -5289,76 +5429,76 @@ _exports.flag = __webpack_require__(0);
  * Flag transferring utility
  */
 
-_exports.transferFlags = __webpack_require__(11);
+_exports.transferFlags = __webpack_require__(13);
 
 /*!
  * Deep equal utility
  */
 
-_exports.eql = __webpack_require__(32);
+_exports.eql = __webpack_require__(34);
 
 /*!
  * Deep path value
  */
 
-_exports.getPathValue = __webpack_require__(25);
+_exports.getPathValue = __webpack_require__(27);
 
 /*!
  * Deep path info
  */
 
-_exports.getPathInfo = __webpack_require__(8);
+_exports.getPathInfo = __webpack_require__(10);
 
 /*!
  * Check if a property exists
  */
 
-_exports.hasProperty = __webpack_require__(9);
+_exports.hasProperty = __webpack_require__(11);
 
 /*!
  * Function name
  */
 
-_exports.getName = __webpack_require__(7);
+_exports.getName = __webpack_require__(9);
 
 /*!
  * add Property
  */
 
-_exports.addProperty = __webpack_require__(21);
+_exports.addProperty = __webpack_require__(23);
 
 /*!
  * add Method
  */
 
-_exports.addMethod = __webpack_require__(20);
+_exports.addMethod = __webpack_require__(22);
 
 /*!
  * overwrite Property
  */
 
-_exports.overwriteProperty = __webpack_require__(30);
+_exports.overwriteProperty = __webpack_require__(32);
 
 /*!
  * overwrite Method
  */
 
-_exports.overwriteMethod = __webpack_require__(29);
+_exports.overwriteMethod = __webpack_require__(31);
 
 /*!
  * Add a chainable method
  */
 
-_exports.addChainableMethod = __webpack_require__(19);
+_exports.addChainableMethod = __webpack_require__(21);
 
 /*!
  * Overwrite chainable method
  */
 
-_exports.overwriteChainableMethod = __webpack_require__(28);
+_exports.overwriteChainableMethod = __webpack_require__(30);
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5420,7 +5560,7 @@ module.exports = function (ctx, name, method, chainingBehavior) {
 };
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5481,7 +5621,7 @@ module.exports = function (ctx, name, method) {
 };
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5542,7 +5682,7 @@ module.exports = function (ctx, name, getter) {
 };
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5578,16 +5718,16 @@ module.exports = function (obj, args) {
 };
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(33);
+module.exports = __webpack_require__(35);
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5603,7 +5743,7 @@ module.exports = __webpack_require__(33);
  * Module dependencies
  */
 
-var type = __webpack_require__(34);
+var type = __webpack_require__(36);
 
 /*!
  * Buffer.isBuffer browser shim
@@ -5611,7 +5751,7 @@ var type = __webpack_require__(34);
 
 var Buffer;
 try {
-  Buffer = __webpack_require__(39).Buffer;
+  Buffer = __webpack_require__(41).Buffer;
 } catch (ex) {
   Buffer = {};
   Buffer.isBuffer = function () {
@@ -5854,16 +5994,16 @@ function objectEqual(a, b, m) {
 }
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(35);
+module.exports = __webpack_require__(37);
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6015,7 +6155,7 @@ Library.prototype.test = function (obj, type) {
 };
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6157,7 +6297,7 @@ Library.prototype.test = function (obj, type) {
 };
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6182,7 +6322,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6302,7 +6442,7 @@ function fromByteArray(uint8) {
 }
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6316,9 +6456,9 @@ function fromByteArray(uint8) {
 
 
 
-var base64 = __webpack_require__(38);
-var ieee754 = __webpack_require__(40);
-var isArray = __webpack_require__(41);
+var base64 = __webpack_require__(40);
+var ieee754 = __webpack_require__(42);
+var isArray = __webpack_require__(43);
 
 exports.Buffer = Buffer;
 exports.SlowBuffer = SlowBuffer;
@@ -8043,10 +8183,10 @@ function blitBuffer(src, dst, offset, length) {
 function isnan(val) {
   return val !== val; // eslint-disable-line no-self-compare
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)));
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(39)))
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -8135,7 +8275,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -8145,16 +8285,16 @@ module.exports = Array.isArray || function (arr) {
 };
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var expect = __webpack_require__(12).expect;
+var expect = __webpack_require__(14).expect;
 var app = __webpack_require__(2);
 
-var Character = __webpack_require__(2);
+var Character = __webpack_require__(3);
 
 describe('App', function () {
     it('should return true if app.js exists', function () {
@@ -8164,8 +8304,8 @@ describe('App', function () {
 
 describe('Character Creation', function () {
     describe('Character Name', function () {
-        var claire = new Character('Claire');
-        var peter = new Character('Peter');
+        var claire = new Character('Claire', 'Good');
+        var peter = new Character('Peter', 'Neutral');
 
         it('should return \'Claire\' for the name', function () {
             expect(claire.name).to.equal('Claire');
@@ -8182,11 +8322,34 @@ describe('Character Creation', function () {
             expect(george.alignment).to.equal('Good');
         });
 
-        var chelsea = new Character('Chelsea', 'Okayish');
-        it("should disallow alignments other than 'Good', 'Evil', and 'Neutral'", function () {
-            console.log(chelsea.alignment);
+        it("should disallow alignments other than 'Evil', 'Good', and 'Neutral'", function () {
+            expect(function () {
+                var chelsea = new Character('Chelsea', 'Okayish');
+            }).to.throw(ReferenceError);
+        });
+    });
+});
 
-            expect(chelsea.alignment).to.equal('Sorry, that is not a valid alignment');
+describe('Character has properties and actions', function () {
+    var someNewChar = void 0;
+
+    beforeEach(function () {
+        someNewChar = new Character('Loni', 'Good');
+    });
+
+    describe('Armor Class and Hit points', function () {
+        it('should return 10 when asked for the armor class value', function () {
+            expect(someNewChar.armorClass).to.equal(10);
+        });
+
+        it('should have a starting amount of 5 hit points', function () {
+            expect(someNewChar.hitPoints).to.equal(5);
+        });
+    });
+
+    describe('Character can Attack', function () {
+        it('should allow the character to roll a d20', function () {
+            expect(someNewChar.rollForAttack).to.be.within(0, 20);
         });
     });
 });
