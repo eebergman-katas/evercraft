@@ -547,7 +547,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-commander@2.9.0:
+commander@2.9.0, commander@^2.8.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -580,6 +580,12 @@ core-js@^2.4.0:
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
+
+d20@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/d20/-/d20-1.4.1.tgz#8575327d94bb96619348e04adfbb250e5a2bc62a"
+  dependencies:
+    commander "^2.8.1"
 
 d@^0.1.1, d@~0.1.1:
   version "0.1.1"

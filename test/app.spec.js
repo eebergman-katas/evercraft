@@ -35,5 +35,17 @@ describe('Character Creation', () => {
         });
     });
 
+    describe('Armor Class and Hit points', () => {
+        let someNewChar;
+
+        beforeEach(() => {
+            someNewChar = new Character('Loni', 'Good');
+        });
+
+        it('should return 10 when asked for the armor class value', () => {
+            expect(someNewChar.armorClass).to.equal(10);
+        });
+    });
+
 
 });

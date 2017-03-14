@@ -7,7 +7,6 @@ class Character {
     constructor(name, alignment) {
         this.name = name;
         this.alignment = alignment;
-
     }
 
     get alignment() {
@@ -21,9 +20,14 @@ class Character {
         if (!(validAlignments.includes(localAlignment.toLocaleLowerCase()))) {
             throw new ReferenceError('Sorry, that is not a valid alignment');
         }
-        
         this._alignment = value;
     };
+
+    get armorClass() {
+        return 10;
+    }
+    
+
 
 
 }; // class 
