@@ -31,7 +31,21 @@ class Character {
         return ourRoll;
     };
 
+    doesHitLand (defenderArmorScore, hitScore) {
+        let didItHit = false;
+
+        if (hitScore >= defenderArmorScore) {
+            didItHit = true;
+        } else {
+            didItHit = false;
+        }
+
+        return didItHit;
+    }
+
 }; // class 
+
+
 
 
 module.exports = Character;

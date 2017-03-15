@@ -61,10 +61,11 @@ describe('Character has properties and actions', () => {
         });
 
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-
+            let defenderArmorScore = ourEnemy.armorClass;
             let hitScore = (sinon.stub(ourHero, "rollForAttack").returns(11).defaultBehavior.returnValue);
-            
-            expect(app.doesHitLand(ourHero, ourEnemy, hitScore)).to.be(true);
+
+            expect(ourEnemy.doesHitLand(defenderArmorScore, hitScore)).to.be.true;
+
         })
     });
 });
