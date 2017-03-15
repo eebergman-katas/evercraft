@@ -8,6 +8,8 @@ class Character {
     constructor(name, alignment) {
         this.name = name;
         this.alignment = alignment;
+        this.armorClass = 10;
+        this.hitPoints = 5;
     }
 
     get alignment() {
@@ -24,18 +26,12 @@ class Character {
         this._alignment = value;
     };
 
-    get armorClass() {
-        return 10;
-    };
-    
-    get hitPoints() {
-        return 5;
-    };
-
-    get rollForAttack() {
-        return aDie.roll(20);
+    rollForAttack () {
+        let ourRoll = Number(aDie.roll(20));
+        return ourRoll;
     };
 
 }; // class 
+
 
 module.exports = Character;

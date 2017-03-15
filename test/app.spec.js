@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const sinon = require('sinon');
 const app = require('../src/app');
 
 let Character = require('../src/character');
@@ -56,9 +57,15 @@ describe('Character has properties and actions', () => {
 
     describe('Character can Attack', () => {
         it('should allow the character to roll a d20', () => {
-            expect(ourHero.rollForAttack).to.be.within(0, 20);
+            expect(ourHero.rollForAttack()).to.be.within(0, 20);
         });
 
+        it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
+
+            let hitScore = (sinon.stub(ourHero, "rollForAttack").returns(11).defaultBehavior.returnValue);
+            
+            expect(app.doesHitLand(ourHero, ourEnemy, hitScore)).to.be(true);
+        })
     });
 });
 
