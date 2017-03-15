@@ -65,8 +65,7 @@ describe('Character has properties and actions', () => {
             let hitScore = (sinon.stub(ourHero, "rollForAttack").returns(11).defaultBehavior.returnValue);
 
             expect(ourEnemy.doesHitLand(defenderArmorScore, hitScore)).to.be.true;
-
-        })
+        });
     });
 });
 
