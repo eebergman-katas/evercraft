@@ -26,12 +26,28 @@ class Character {
         this._alignment = value;
     };
 
-    rollForAttack () {
+    attack(defender, hitScore) {
+        let didItHit;
+
+        if (isNaN(hitScore)) {
+            hitScore = this.rollADie();
+        }
+
+        didItHit = this.doesHitLand(defender.armorClass, hitScore);
+
+        if (didItHit) {
+            defender = this.deductHitPoints(defender, hitScore);
+        }
+
+        return defender;
+    };
+
+    rollADie() {
         let ourRoll = Number(aDie.roll(20));
         return ourRoll;
     };
 
-    doesHitLand (defenderArmorScore, hitScore) {
+    doesHitLand(defenderArmorScore, hitScore) {
         let didItHit = false;
 
         if (hitScore >= defenderArmorScore) {
@@ -39,13 +55,22 @@ class Character {
         } else {
             didItHit = false;
         }
-
         return didItHit;
+    };
+
+    deductHitPoints(defender, hitScore) {
+
+        if (hitScore === 20) {
+            defender.hitPoints -= 2;
+        } else {
+            defender.hitPoints -= 1;
+        }
+
+        return defender;
     }
+
+
 
 }; // class 
 
-
-
-
-module.exports = Character;
+export default Character;
