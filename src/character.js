@@ -8,6 +8,7 @@ class Character {
     constructor(name, alignment) {
         this.name = name;
         this.alignment = alignment;
+        this.alive = true;
         this.armorClass = 10;
         this.hitPoints = 5;
     }
@@ -17,14 +18,27 @@ class Character {
     }
 
     set alignment(value) {
+        value = this.validateAlignments(value); 
+        this._alignment = value;
+    };
+
+    get hitPoints() {
+        return this._hitPoints;
+    }
+
+    set hitPoints(value) {
+        this._hitPoints = value;
+    }
+
+    validateAlignments(value) {
         const validAlignments = ['good', 'evil', 'neutral'];
         let localAlignment = String(value);
 
         if (!(validAlignments.includes(localAlignment.toLocaleLowerCase()))) {
             throw new ReferenceError('Sorry, that is not a valid alignment');
-        }
-        this._alignment = value;
-    };
+        } 
+        return value;
+    }
 
     attack(defender, hitScore) {
         let didItHit;
@@ -66,6 +80,13 @@ class Character {
             defender.hitPoints -= 1;
         }
 
+        return defender;
+    }
+
+    aliveOrDead(defender) {
+        if(defender.hitPoints <= 0) {
+            defender.alive = false;
+        }
         return defender;
     }
 

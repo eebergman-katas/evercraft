@@ -113,5 +113,13 @@ describe('Character has properties and actions', () => {
             expect(postAttackHitPoints).to.equal(3);
         });
 
+        it('should return false(is dead) if HP <= to 0', () => {
+            ourHero.hitPoints = 0;
+
+            ourHero.aliveOrDead(ourHero);
+
+            expect(ourHero.alive).to.be.false;
+        })
+
     });
 });
