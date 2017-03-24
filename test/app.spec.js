@@ -114,12 +114,14 @@ describe('Character has properties and actions', () => {
         });
 
         it('should return false(is dead) if HP <= to 0', () => {
+            // Arrange
             ourHero.hitPoints = 0;
-
+            // Act
             ourHero.aliveOrDead(ourHero);
-
+            //Expect
             expect(ourHero.alive).to.be.false;
-        })
+        });
 
+        
     });
 });

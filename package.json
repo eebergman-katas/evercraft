@@ -7,8 +7,10 @@
   "license": "MIT",
   "scripts": {
     "test": "_mocha --recursive --compilers js:babel-register",
+    "coverage": "nyc --require babel-core/register _mocha",
     "lint": "eslint .",
-    "fix": "eslint . --fix"
+    "fix": "eslint . --fix",
+    "report": "nyc report"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -19,6 +21,7 @@
     "eslint": "^3.17.1",
     "eslint-config-google": "^0.7.1",
     "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
     "sinon": "next"
   },
   "dependencies": {

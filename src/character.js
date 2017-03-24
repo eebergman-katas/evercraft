@@ -5,12 +5,12 @@ const aDie = require('d20');
 
 class Character {
 
-    constructor(name, alignment) {
+    constructor(name, alignment, alive, armorClass, hitPoints) {
         this.name = name;
         this.alignment = alignment;
-        this.alive = true;
-        this.armorClass = 10;
-        this.hitPoints = 5;
+        this.alive = alive || true;
+        this.armorClass = armorClass || 10;
+        this.hitPoints = hitPoints || 5;
     }
 
     get alignment() {
@@ -20,7 +20,7 @@ class Character {
     set alignment(value) {
         value = this.validateAlignments(value); 
         this._alignment = value;
-    };
+    }
 
     get hitPoints() {
         return this._hitPoints;
@@ -54,12 +54,12 @@ class Character {
         }
 
         return defender;
-    };
+    }
 
     rollADie() {
         let ourRoll = Number(aDie.roll(20));
         return ourRoll;
-    };
+    }
 
     doesHitLand(defenderArmorScore, hitScore) {
         let didItHit = false;
@@ -70,7 +70,7 @@ class Character {
             didItHit = false;
         }
         return didItHit;
-    };
+    }
 
     deductHitPoints(defender, hitScore) {
 
