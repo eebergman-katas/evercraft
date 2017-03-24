@@ -1,11 +1,14 @@
 'use strict';
 
+import Abilities from './abilities';
+
 const alignmentErr = new ReferenceError('Sorry, that is not a valid alignment');
 const aDie = require('d20');
 
-class Character {
+export default class Character extends Abilities {
 
     constructor(name, alignment, alive, armorClass, hitPoints) {
+        super();
         this.name = name;
         this.alignment = alignment;
         this.alive = alive || true;
@@ -18,7 +21,8 @@ class Character {
     }
 
     set alignment(value) {
-        value = this.validateAlignments(value); 
+        value = this.validateAlignments(value);
+
         this._alignment = value;
     }
 
@@ -36,12 +40,12 @@ class Character {
 
         if (!(validAlignments.includes(localAlignment.toLocaleLowerCase()))) {
             throw new ReferenceError('Sorry, that is not a valid alignment');
-        } 
+        }
         return value;
     }
 
     attack(defender, hitScore) {
-        let didItHit;
+        let didItHit = false;
 
         if (isNaN(hitScore)) {
             hitScore = this.rollADie();
@@ -57,7 +61,8 @@ class Character {
     }
 
     rollADie() {
-        let ourRoll = Number(aDie.roll(20));
+        let ourRoll = 0;
+        ourRoll = aDie.roll(20);
         return ourRoll;
     }
 
@@ -84,14 +89,9 @@ class Character {
     }
 
     aliveOrDead(defender) {
-        if(defender.hitPoints <= 0) {
+        if (defender.hitPoints <= 0) {
             defender.alive = false;
         }
         return defender;
     }
-
-
-
-}; // class 
-
-export default Character;
+};

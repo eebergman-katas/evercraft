@@ -1,14 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const app = require('../src/app');
 
 import Character from '../src/character';
-
-describe('App', () => {
-    it('should return true if app.js exists', () => {
-        expect('app').to.exist;
-    });
-});
 
 describe('Character Creation', () => {
     describe('Character Name', () => {
@@ -122,6 +115,6 @@ describe('Character has properties and actions', () => {
             expect(ourHero.alive).to.be.false;
         });
 
-        
+
     });
 });

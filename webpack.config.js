@@ -6,7 +6,9 @@ module.exports = {
         app: [
             './src/app.js','./src/character.js'
         ],
-        test: './test/app.spec.js',
+        test: [
+            './test/app.spec.js', './test/character.spec.js'
+        ]
     },
 
     output: {
