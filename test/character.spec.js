@@ -104,16 +104,19 @@ describe('Character Creation', () => {
     });
 });
 
-// describe('Character Modification', () => {
+describe('Character Modification', () => {
+    let attacker,
+        defender;
 
-//     beforeEach(() => {
-//         let ella = new Character("Ella", "Good");
-//     })
+    beforeEach(() => {
+        attacker = new Character("Ella", "Neutral");
+        defender = new Character("Jayne", "Good");
+    });
 
-//     it('should add the strength modifier to the attack roll', () => {
+    it('should add the strength modifier to the attack roll', () => {
+        let attackRoll = (sinon.stub(attacker, "rollADie").returns(10).defaultBehavior.returnValue);
+        attacker.strength = 15;
 
-//         ella.
-
-//         expect()
-//     });
-// });
+        expect(attacker.rollForAttack(attacker, attackRoll)).to.equal(12);
+    });
+});

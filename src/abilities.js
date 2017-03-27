@@ -21,7 +21,7 @@ export default class Abilities {
         return value;
     }
 
-    modifer(abilityScore) {
+    modifier(abilityScore) {
         return Math.floor((abilityScore - 10) / 2);
     }
 

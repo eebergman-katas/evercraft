@@ -51,38 +51,47 @@ export default class Character extends Abilities {
         return aDie.roll(numberOfSides);
     }
 
+    rollForAttack(attacker, attackRoll, numberOfSides) {
+        attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
+
+        let strengthModifier = attacker.modifier(attacker.strength);
+
+        return attackRoll + strengthModifier;
+    }
 
 
-
-    attack(defender, hitScore, numberOfSides) { 
+    attack(defender, attackRoll, numberOfSides) {
+        attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
+        
         let didItHit = false;
-        let didARollGetPassedIn = isNaN(hitScore);
-
-        if (didARollGetPassedIn) {
-            hitScore = this.rollADie(numberOfSides);
-        }
-        didItHit = this.doesHitLand(defender.armorClass, hitScore);
+        didItHit = this.doesHitLand(defender.armorClass, attackRoll);
 
         if (didItHit) {
-            defender = this.deductHitPoints(defender, hitScore);
+            defender = this.deductHitPoints(defender, attackRoll);
         }
         return defender;
     }
 
+    isADieRollNeeded(attackRoll, numberOfSides) {
+        let didARollGetPassedIn = isNaN(attackRoll);
 
-
-
-    doesHitLand(defenderArmorScore, hitScore) {
-        return hitScore >= defenderArmorScore;
+        if (didARollGetPassedIn) {
+            return attackRoll = this.rollADie(numberOfSides);
+        }
+        return attackRoll;
     }
 
-    deductHitPoints(defender, hitScore) {
+    doesHitLand(defenderArmorScore, attackRoll) {
+        return attackRoll >= defenderArmorScore;
+    }
+
+    deductHitPoints(defender, attackRoll) {
         let defaultDamage = 1,
             damageDealt = defaultDamage;
 
-        if (hitScore === 20) {
+        if (attackRoll === 20) {
             defender.hitPoints -= damageDealt * 2;
-        } 
+        }
         else {
             defender.hitPoints -= damageDealt;
         }

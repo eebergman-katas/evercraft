@@ -68,11 +68,11 @@ describe('Character Abilities', () => {
         });
     });
 
-    describe('Abilities relate to a modifer score', () => {
+    describe('Abilities relate to a modifier score', () => {
         it('should get a modifer score for each ability score', () => {
             emikelda.charisma = 1;
 
-            expect(emikelda.modifer(emikelda.charisma)).to.equal(-5);
+            expect(emikelda.modifier(emikelda.charisma)).to.equal(-5);
         });
     });
 
