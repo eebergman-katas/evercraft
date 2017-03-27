@@ -2,15 +2,12 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 
 import Character from '../src/character';
+const defaultArmorClass = 10;
+const defaultHitPoints = 5;
 
 describe('Character Creation', () => {
     describe('Character Name', () => {
-        let claire = new Character('Claire', 'Good');
         let peter = new Character('Peter', 'Neutral');
-
-        it('should return \'Claire\' for the name', () => {
-            expect(claire.name).to.equal('Claire');
-        });
 
         it('should return the name passed to it as the name', () => {
             expect(peter.name).to.equal('Peter');
@@ -19,7 +16,8 @@ describe('Character Creation', () => {
 
     describe('Character Alignment', () => {
         let george = new Character('George', 'Good');
-        it('should set alignment from alignment input(Good)', () => {
+
+        it('should set alignment from alignment input (Good)', () => {
             expect(george.alignment).to.equal('Good');
         });
 
@@ -29,90 +27,81 @@ describe('Character Creation', () => {
     });
 });
 
-describe('Character has properties and actions', () => {
-    let ourHero,
-        ourEnemy;
+describe('New Characters...', () => {
+    const useA20SidedDie = 20;
+    let defender,
+        offensive;
 
     beforeEach(() => {
-        ourHero = new Character('Loni', 'Good');
-        ourEnemy = new Character('Theo', 'Evil');
+        defender = new Character('Danni', 'Good');
+        offensive = new Character('Oscar', 'Evil');
     });
 
-    describe('Armor Class and Hit points', () => {
-        it('should return 10 when asked for the armor class value', () => {
-            expect(ourHero.armorClass).to.equal(10);
+    describe('have Armor Class and Hit Points', () => {
+        it('should return the default ArmorClass when asked for the armorClass on a new Character', () => {
+            expect(defender.armorClass).to.equal(defaultArmorClass);
         });
 
-        it('should have a starting amount of 5 hit points', () => {
-            expect(ourHero.hitPoints).to.equal(5);
+        it('should return the default HitPoints when asked for the hitPoints on a new Character', () => {
+            expect(defender.hitPoints).to.equal(defaultHitPoints);
         });
     });
 
-    describe('Character can Attack', () => {
+    describe('can Attack', () => {
         it('should allow the character to roll a d20', () => {
-            expect(ourHero.rollADie()).to.be.within(0, 20);
+            const minimumDieRoll = 0,
+                maximumDieRoll = 20;
+
+            expect(defender.rollADie(useA20SidedDie)).to.be.within(minimumDieRoll, maximumDieRoll);
         });
 
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            let defenderArmorScore = ourEnemy.armorClass;
-            let hitScore = (sinon.stub(ourHero, "rollADie").returns(11).defaultBehavior.returnValue);
+            let defenderArmorScore = offensive.armorClass;
+            let hitScore = (sinon.stub(defender, "rollADie").returns(11).defaultBehavior.returnValue);
 
-            expect(ourEnemy.doesHitLand(defenderArmorScore, hitScore)).to.be.true;
+            expect(offensive.doesHitLand(defenderArmorScore, hitScore)).to.be.true;
         });
     });
 
-    describe('Character can be damaged', () => {
-        let ourHero,
-            ourEnemy;
+    describe('can be damaged', () => {
 
-        beforeEach(() => {
-            ourHero = new Character('Loni', 'Good');
-            ourEnemy = new Character('Theo', 'Evil');
-        });
+        it('should reduce defender hitPoints if offensive lands hit', () => {
+            let initalHitPoints = defender.hitPoints;
+            let hitScore = (sinon.stub(offensive, "rollADie").returns(11).defaultBehavior.returnValue);
 
-        it('should reduce defender hitPoints by one if offensive lands hit', () => {
-            //Arange
-            let initalHitPoints = ourEnemy.hitPoints;
-            let hitScore = (sinon.stub(ourHero, "rollADie").returns(11).defaultBehavior.returnValue);
-            //Act
-            ourEnemy = ourHero.attack(ourEnemy, hitScore);
-            let postAttackHitPoints = ourEnemy.hitPoints;
+            defender = offensive.attack(defender, hitScore, useA20SidedDie);
+            let postAttackHitPoints = defender.hitPoints;
 
-            //Expect
             expect(initalHitPoints).to.be.greaterThan(postAttackHitPoints);
         });
 
         it('should not reduce defender hitPoints if offensive does not land hit', () => {
-            //Arrange
-            let initalHitPoints = ourEnemy.hitPoints;
-            let hitScore = (sinon.stub(ourHero, "rollADie").returns(3).defaultBehavior.returnValue);
-            //Act
-            ourEnemy = ourHero.attack(ourEnemy, hitScore);
-            let postAttackHitPoints = ourEnemy.hitPoints;
+            let initalHitPoints = offensive.hitPoints;
+            let hitScore = (sinon.stub(defender, "rollADie").returns(3).defaultBehavior.returnValue);
+            
+            offensive = defender.attack(offensive, hitScore);
+            let postAttackHitPoints = offensive.hitPoints;
 
-            //Expect
             expect(initalHitPoints).to.equal(postAttackHitPoints);
         });
 
         it('should reduce defender hitPoints by 2 if player rolls a nat 20', () => {
-            //Arange
-            let initalHitPoints = ourEnemy.hitPoints;
-            let hitScore = (sinon.stub(ourHero, "rollADie").returns(20).defaultBehavior.returnValue);
-            //Act
-            ourEnemy = ourHero.attack(ourEnemy, hitScore);
-            let postAttackHitPoints = ourEnemy.hitPoints;
+            let postAttackExpectedHealth = 3;
+            let initalHitPoints = offensive.hitPoints;
+            let hitScore = (sinon.stub(defender, "rollADie").returns(20).defaultBehavior.returnValue);
+            
+            offensive = defender.attack(offensive, hitScore);
+            let postAttackHitPoints = offensive.hitPoints;
 
-            //Expect
-            expect(postAttackHitPoints).to.equal(3);
+            expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
         });
 
         it('should return false(is dead) if HP <= to 0', () => {
-            // Arrange
-            ourHero.hitPoints = 0;
-            // Act
-            ourHero.aliveOrDead(ourHero);
-            //Expect
-            expect(ourHero.alive).to.be.false;
+            let pointOfDeath = 0;
+            
+            defender.hitPoints = pointOfDeath;
+            
+            expect(defender.isAlive(defender)).to.be.false;
         });
 
 

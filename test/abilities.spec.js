@@ -5,38 +5,37 @@ describe('Characters Abilities', () => {
     let emikelda;
 
     beforeEach(() => {
-        emikelda = new Character('Emikela', 'neutral', true, 10, 5);
+        emikelda = new Character('Emikela', 'neutral');
     });
 
-    describe('There are six abilities', () => {
-        it('should have a Strength ability', () => {
+    describe('A new Character has six default ability scores', () => {
+        it('should have a default Strength ability score', () => {
             expect(emikelda.strength).to.equal(10);
         });
 
-        it('should have a Dexterity ability', () => {
+        it('should have a default Dexterity ability score', () => {
             expect(emikelda.dexterity).to.equal(10);
         });
 
-        it('should have a Constitution ability', () => {
+        it('should have a default Constitution ability score', () => {
             expect(emikelda.constitution).to.equal(10);
         });
 
-        it('should have a Wisdom ability', () => {
+        it('should have a default Wisdom ability score', () => {
             expect(emikelda.wisdom).to.equal(10);
         });
 
-        it('should have a Intelligence ability', () => {
+        it('should have a default Intelligence ability score', () => {
             expect(emikelda.intelligence).to.equal(10);
         });
 
-        it('should have a Charisma ability', () => {
+        it('should have a default Charisma ability score', () => {
             expect(emikelda.charisma).to.equal(10);
         });
     });
 
     describe('Abilities are 1 - 20', () => {
         it('should disallow all abilities to go below 1', () => {
-            // strength, dexterity, constitution, wisdom, intelligence, charisma
             emikelda.strength = -1;
             emikelda.dexterity = 0;
             emikelda.constitution = -14;
@@ -53,7 +52,6 @@ describe('Characters Abilities', () => {
         });
 
         it('should disallow all abilities to go above 20', () => {
-            // strength, dexterity, constitution, wisdom, intelligence, charisma
             emikelda.strength = 21;
             emikelda.dexterity = 22;
             emikelda.constitution = 25;
@@ -68,8 +66,10 @@ describe('Characters Abilities', () => {
            expect(emikelda.intelligence).to.equal(20);
            expect(emikelda.charisma).to.equal(20);
         });
+    });
 
+    describe('', () => {
 
     });
-});
 
+});

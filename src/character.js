@@ -4,16 +4,19 @@ import Abilities from './abilities';
 
 const alignmentErr = new ReferenceError('Sorry, that is not a valid alignment');
 const aDie = require('d20');
+const defaultArmorClass = 10;
+const defaultHitPoints = 5;
+const pointOfDeath = 0;
+
 
 export default class Character extends Abilities {
 
-    constructor(name, alignment, alive, armorClass, hitPoints) {
+    constructor(name, alignment, armorClass, hitPoints) {
         super();
         this.name = name;
         this.alignment = alignment;
-        this.alive = alive || true;
-        this.armorClass = armorClass || 10;
-        this.hitPoints = hitPoints || 5;
+        this.armorClass = armorClass || defaultArmorClass;
+        this.hitPoints = hitPoints || defaultHitPoints;
     }
 
     get alignment() {
@@ -44,11 +47,16 @@ export default class Character extends Abilities {
         return value;
     }
 
-    attack(defender, hitScore) {
-        let didItHit = false;
+    rollADie(numberOfSides) {
+        return aDie.roll(numberOfSides);
+    }
 
-        if (isNaN(hitScore)) {
-            hitScore = this.rollADie();
+    attack(defender, hitScore, numberOfSides) {
+        let didItHit = false;
+        let didARollGetPassedIn = isNaN(hitScore);
+
+        if (didARollGetPassedIn) {
+            hitScore = this.rollADie(numberOfSides);
         }
 
         didItHit = this.doesHitLand(defender.armorClass, hitScore);
@@ -60,25 +68,11 @@ export default class Character extends Abilities {
         return defender;
     }
 
-    rollADie() {
-        let ourRoll = 0;
-        ourRoll = aDie.roll(20);
-        return ourRoll;
-    }
-
     doesHitLand(defenderArmorScore, hitScore) {
-        let didItHit = false;
-
-        if (hitScore >= defenderArmorScore) {
-            didItHit = true;
-        } else {
-            didItHit = false;
-        }
-        return didItHit;
+        return hitScore >= defenderArmorScore;
     }
 
     deductHitPoints(defender, hitScore) {
-
         if (hitScore === 20) {
             defender.hitPoints -= 2;
         } else {
@@ -88,10 +82,7 @@ export default class Character extends Abilities {
         return defender;
     }
 
-    aliveOrDead(defender) {
-        if (defender.hitPoints <= 0) {
-            defender.alive = false;
-        }
-        return defender;
+    isAlive(defender) {
+        return defender.hitPoints > pointOfDeath;
     }
 };
