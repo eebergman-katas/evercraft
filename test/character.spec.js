@@ -25,9 +25,7 @@ describe('Character Creation', () => {
             expect(() => { let chelsea = new Character('Chelsea', 'Okayish'); }).to.throw(ReferenceError);
         });
     });
-});
 
-describe('New Characters...', () => {
     const useA20SidedDie = 20;
     let defender,
         offensive;
@@ -37,7 +35,7 @@ describe('New Characters...', () => {
         offensive = new Character('Oscar', 'Evil');
     });
 
-    describe('have Armor Class and Hit Points', () => {
+    describe('Armor Class and Hit Points', () => {
         it('should return the default ArmorClass when asked for the armorClass on a new Character', () => {
             expect(defender.armorClass).to.equal(defaultArmorClass);
         });
@@ -78,18 +76,18 @@ describe('New Characters...', () => {
         it('should not reduce defender hitPoints if offensive does not land hit', () => {
             let initalHitPoints = offensive.hitPoints;
             let hitScore = (sinon.stub(defender, "rollADie").returns(3).defaultBehavior.returnValue);
-            
+
             offensive = defender.attack(offensive, hitScore);
             let postAttackHitPoints = offensive.hitPoints;
 
             expect(initalHitPoints).to.equal(postAttackHitPoints);
         });
 
-        it('should reduce defender hitPoints by 2 if player rolls a nat 20', () => {
+        it('should reduce defender hitPoints by double if player rolls a nat 20', () => {
             let postAttackExpectedHealth = 3;
             let initalHitPoints = offensive.hitPoints;
             let hitScore = (sinon.stub(defender, "rollADie").returns(20).defaultBehavior.returnValue);
-            
+
             offensive = defender.attack(offensive, hitScore);
             let postAttackHitPoints = offensive.hitPoints;
 
@@ -98,12 +96,24 @@ describe('New Characters...', () => {
 
         it('should return false(is dead) if HP <= to 0', () => {
             let pointOfDeath = 0;
-            
+
             defender.hitPoints = pointOfDeath;
-            
+
             expect(defender.isAlive(defender)).to.be.false;
         });
-
-
     });
 });
+
+// describe('Character Modification', () => {
+
+//     beforeEach(() => {
+//         let ella = new Character("Ella", "Good");
+//     })
+
+//     it('should add the strength modifier to the attack roll', () => {
+
+//         ella.
+
+//         expect()
+//     });
+// });

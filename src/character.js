@@ -51,34 +51,41 @@ export default class Character extends Abilities {
         return aDie.roll(numberOfSides);
     }
 
-    attack(defender, hitScore, numberOfSides) {
+
+
+
+    attack(defender, hitScore, numberOfSides) { 
         let didItHit = false;
         let didARollGetPassedIn = isNaN(hitScore);
 
         if (didARollGetPassedIn) {
             hitScore = this.rollADie(numberOfSides);
         }
-
         didItHit = this.doesHitLand(defender.armorClass, hitScore);
 
         if (didItHit) {
             defender = this.deductHitPoints(defender, hitScore);
         }
-
         return defender;
     }
+
+
+
 
     doesHitLand(defenderArmorScore, hitScore) {
         return hitScore >= defenderArmorScore;
     }
 
     deductHitPoints(defender, hitScore) {
-        if (hitScore === 20) {
-            defender.hitPoints -= 2;
-        } else {
-            defender.hitPoints -= 1;
-        }
+        let defaultDamage = 1,
+            damageDealt = defaultDamage;
 
+        if (hitScore === 20) {
+            defender.hitPoints -= damageDealt * 2;
+        } 
+        else {
+            defender.hitPoints -= damageDealt;
+        }
         return defender;
     }
 
