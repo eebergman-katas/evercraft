@@ -14,11 +14,15 @@ export default class Abilities {
     validateAbilityScore(value) {
         if (value < 1) {
             value = 1;
-
-        } else if (value > 20) {
+        } 
+        else if (value > 20) {
             value = 20;
         }
         return value;
+    }
+
+    modifer(abilityScore) {
+        return Math.floor((abilityScore - 10) / 2);
     }
 
 

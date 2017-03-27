@@ -43,12 +43,12 @@ describe('Characters Abilities', () => {
             emikelda.intelligence = -100;
             emikelda.charisma = -20;
 
-           expect(emikelda.strength).to.equal(1);
-           expect(emikelda.dexterity).to.equal(1);
-           expect(emikelda.constitution).to.equal(1);
-           expect(emikelda.wisdom).to.equal(1);
-           expect(emikelda.intelligence).to.equal(1);
-           expect(emikelda.charisma).to.equal(1);
+            expect(emikelda.strength).to.equal(1);
+            expect(emikelda.dexterity).to.equal(1);
+            expect(emikelda.constitution).to.equal(1);
+            expect(emikelda.wisdom).to.equal(1);
+            expect(emikelda.intelligence).to.equal(1);
+            expect(emikelda.charisma).to.equal(1);
         });
 
         it('should disallow all abilities to go above 20', () => {
@@ -59,17 +59,24 @@ describe('Characters Abilities', () => {
             emikelda.intelligence = 210;
             emikelda.charisma = 39;
 
-           expect(emikelda.strength).to.equal(20);
-           expect(emikelda.dexterity).to.equal(20);
-           expect(emikelda.constitution).to.equal(20);
-           expect(emikelda.wisdom).to.equal(20);
-           expect(emikelda.intelligence).to.equal(20);
-           expect(emikelda.charisma).to.equal(20);
+            expect(emikelda.strength).to.equal(20);
+            expect(emikelda.dexterity).to.equal(20);
+            expect(emikelda.constitution).to.equal(20);
+            expect(emikelda.wisdom).to.equal(20);
+            expect(emikelda.intelligence).to.equal(20);
+            expect(emikelda.charisma).to.equal(20);
         });
     });
 
-    describe('', () => {
+    describe('Abilities relate to a modifer score', () => {
+        it('should get a modifer score for each ability score', () => {
+            emikelda.charisma = 1;
 
+            expect(emikelda.modifer(emikelda.charisma)).to.equal(-5);
+        });
     });
+
+
+
 
 });
