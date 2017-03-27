@@ -4,8 +4,17 @@ const sinon = require('sinon');
 import Character from '../src/character';
 const defaultArmorClass = 10;
 const defaultHitPoints = 5;
+const useA20SidedDie = 20;
 
 describe('Character Creation', () => {
+    let defender,
+        offensive;
+
+    beforeEach(() => {
+        defender = new Character('Danni', 'Good');
+        offensive = new Character('Oscar', 'Evil');
+    });
+
     describe('Character Name', () => {
         let peter = new Character('Peter', 'Neutral');
 
@@ -26,14 +35,6 @@ describe('Character Creation', () => {
         });
     });
 
-    const useA20SidedDie = 20;
-    let defender,
-        offensive;
-
-    beforeEach(() => {
-        defender = new Character('Danni', 'Good');
-        offensive = new Character('Oscar', 'Evil');
-    });
 
     describe('Armor Class and Hit Points', () => {
         it('should return the default ArmorClass when asked for the armorClass on a new Character', () => {
@@ -113,10 +114,23 @@ describe('Character Modification', () => {
         defender = new Character("Jayne", "Good");
     });
 
-    it('should add the strength modifier to the attack roll', () => {
-        let attackRoll = (sinon.stub(attacker, "rollADie").returns(10).defaultBehavior.returnValue);
-        attacker.strength = 15;
+    describe('Using ability modifiers', () => {
+        it('should add the strength modifier to the attack roll', () => {
+            let attackRoll = (sinon.stub(attacker, "rollADie").returns(10).defaultBehavior.returnValue);
+            attacker.strength = 15;
 
-        expect(attacker.rollForAttack(attacker, attackRoll)).to.equal(12);
+            expect(attacker.rollForAttack(attacker, attackRoll)).to.equal(12);
+        });
+
+        it('should add the strength modifier to the damage dealt', () => {
+            let attackRoll = (sinon.stub(attacker, "rollADie").returns(11).defaultBehavior.returnValue);
+            attacker.strength = 15;
+
+            expect(attacker.calcDamage(attacker)).to.equal(3);
+        });
+
+
     });
+
+
 });

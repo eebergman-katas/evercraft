@@ -19,23 +19,15 @@ export default class Character extends Abilities {
         this.hitPoints = hitPoints || defaultHitPoints;
     }
 
-    get alignment() {
-        return this._alignment;
-    }
-
+    get alignment() { return this._alignment; }
     set alignment(value) {
         value = this.validateAlignments(value);
 
         this._alignment = value;
     }
 
-    get hitPoints() {
-        return this._hitPoints;
-    }
-
-    set hitPoints(value) {
-        this._hitPoints = value;
-    }
+    get hitPoints() { return this._hitPoints; }
+    set hitPoints(value) { this._hitPoints = value; }
 
     validateAlignments(value) {
         const validAlignments = ['good', 'evil', 'neutral'];
@@ -55,15 +47,15 @@ export default class Character extends Abilities {
         attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
 
         let strengthModifier = attacker.modifier(attacker.strength);
+        let modifiedAttackRoll = attackRoll + strengthModifier;
 
-        return attackRoll + strengthModifier;
+        return modifiedAttackRoll;
     }
 
-
     attack(defender, attackRoll, numberOfSides) {
-        attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
-        
         let didItHit = false;
+        attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
+
         didItHit = this.doesHitLand(defender.armorClass, attackRoll);
 
         if (didItHit) {
@@ -97,6 +89,16 @@ export default class Character extends Abilities {
         }
         return defender;
     }
+
+    calcDamage(attacker) {
+        let defaultDamage = 1,
+            damage = 0;
+
+        damage = defaultDamage + attacker.modifier(attacker.strength);
+
+        return damage;
+    }
+
 
     isAlive(defender) {
         return defender.hitPoints > pointOfDeath;
