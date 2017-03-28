@@ -15,8 +15,4 @@ class AttackRoll extends Dice {
     }
 }
 
-
-
-
-
 export { AttackRoll };

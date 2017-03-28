@@ -39,57 +39,50 @@ export default class Character extends Abilities {
         return value;
     }
 
-    // rollADie(numberOfSides) {
-    //     return aDie.roll(numberOfSides);
-    // }
-
     modifyAttackRoll(attacker, attackRoll, numberOfSides) {
-        let strengthModifier = 0,
-            attackRollObj = { originalRoll: 0, modifiedRoll: 0 };
+        let strengthModifier = 0;
 
-        attackRollObj.originalRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
+        attackRoll = this.isADieRollNeeded(numberOfSides, attackRoll);
 
         strengthModifier = attacker.modifier(attacker.strength);
 
-        attackRollObj.modifiedRoll = attackRoll + strengthModifier;
+        attackRoll.modifiedRoll = attackRoll.originalRoll + strengthModifier;
 
-        return attackRollObj;
+        return attackRoll;
     }
 
-    attack(defender, attackRoll) {
-        let didItHit = false;
+    attack(defender, attackRoll, attacker) {
+        let didItHit = false,
+        damage = 0;
 
-        didItHit = this.doesHitLand(defender.armorClass, attackRoll);
+        didItHit = this.doesHitLand(defender, attackRoll);
 
         if (didItHit) {
-            defender = this.deductHitPoints(defender, attackRoll);
+            damage = this.calcDamage(attacker, attackRoll);
+            
+            defender = this.deductHitPoints(defender, attackRoll, damage);
         }
         return defender;
     }
 
-    isADieRollNeeded(attackRoll, numberOfSides) {
-        let didARollGetPassedIn = isNaN(attackRoll);
-
-        if (didARollGetPassedIn) {
-            return attackRoll = this.rollADie(numberOfSides);
+    isADieRollNeeded(numberOfSides, attackRoll) {
+        if (isNaN(attackRoll.originalRoll)) {
+            attackRoll.originalRoll = attackRoll.rollADie(numberOfSides);
+            return attackRoll;
         }
         return attackRoll;
     }
 
-    doesHitLand(defenderArmorScore, attackRoll) {
-        return attackRoll >= defenderArmorScore;
+    doesHitLand(defender, attackRoll) {
+        return attackRoll.modifiedRoll >= defender.armorClass;
     }
 
-    // remove attackRoll and add damage from calcDamage
-    deductHitPoints(defender, attackRoll) {
-        let defaultDamage = 1, // this will go
-            damageDealt = defaultDamage; // go
-
-        if (attackRoll === 20) {
-            defender.hitPoints -= damageDealt * 2;
+    deductHitPoints(defender, attackRoll, damage) {
+        if (attackRoll.originalRoll === 20) {
+            defender.hitPoints -= damage * 2;
         }
         else {
-            defender.hitPoints -= damageDealt;
+            defender.hitPoints -= damage;
         }
         return defender;
     }

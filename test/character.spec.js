@@ -10,12 +10,12 @@ const useA20SidedDie = 20;
 
 describe('Character Creation', () => {
     let defender,
-        offensive,
+        attacker,
         attackRoll;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
-        offensive = new Character('Oscar', 'Evil');
+        attacker = new Character('Oscar', 'Evil');
         attackRoll = new AttackRoll();
     });
 
@@ -52,10 +52,11 @@ describe('Character Creation', () => {
 
     describe('can Attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            let defenderArmorScore = offensive.armorClass;
-            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
 
-            expect(offensive.doesHitLand(defenderArmorScore, hitScore)).to.be.true;
+            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+
+            expect(attacker.doesHitLand(defender, attackRoll)).to.be.true;
         });
     });
 
@@ -63,31 +64,35 @@ describe('Character Creation', () => {
 
         it('should reduce defender hitPoints if offensive lands hit', () => {
             let initalHitPoints = defender.hitPoints;
-            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
 
-            defender = offensive.attack(defender, hitScore, useA20SidedDie);
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
+            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+
+            defender = attacker.attack(defender, attackRoll, attacker);
+
             let postAttackHitPoints = defender.hitPoints;
 
             expect(initalHitPoints).to.be.greaterThan(postAttackHitPoints);
         });
 
         it('should not reduce defender hitPoints if offensive does not land hit', () => {
-            let initalHitPoints = offensive.hitPoints;
+            let initalHitPoints = attacker.hitPoints;
             let hitScore = (sinon.stub(attackRoll, "rollADie").returns(3).defaultBehavior.returnValue);
 
-            offensive = defender.attack(offensive, hitScore);
-            let postAttackHitPoints = offensive.hitPoints;
+            attacker = defender.attack(attacker, hitScore);
+            let postAttackHitPoints = attacker.hitPoints;
 
             expect(initalHitPoints).to.equal(postAttackHitPoints);
         });
 
         it('should reduce defender hitPoints by double if player rolls a nat 20', () => {
             let postAttackExpectedHealth = 3;
-            let initalHitPoints = offensive.hitPoints;
-            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue);
 
-            offensive = defender.attack(offensive, hitScore);
-            let postAttackHitPoints = offensive.hitPoints;
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue);
+            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+
+            defender = attacker.attack(defender, attackRoll, attacker);
+            let postAttackHitPoints = defender.hitPoints;
 
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
         });
@@ -102,53 +107,45 @@ describe('Character Creation', () => {
     });
 });
 
+
 describe('Character Modification', () => {
     let attacker,
-        defender;
+        defender,
+        attackRoll;
 
     beforeEach(() => {
         attacker = new Character("Ella", "Neutral");
         defender = new Character("Jayne", "Good");
+        attackRoll = new AttackRoll();
     });
 
+    describe('Using ability modifiers', () => {
+        it('should add the strength modifier to the attack roll', () => {
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(10).defaultBehavior.returnValue);
+            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
 
-    describe('Character Modification', () => {
-        let attacker,
-            defender,
-            attackRoll;
+            attacker.strength = 15;
 
-        beforeEach(() => {
-            attacker = new Character("Ella", "Neutral");
-            defender = new Character("Jayne", "Good");
-            attackRoll = new AttackRoll();
+            let expectedModifiedRoll = attacker.modifyAttackRoll(attacker, attackRoll).modifiedRoll;
+
+            expect(expectedModifiedRoll).to.equal(12);
         });
 
-        describe('Using ability modifiers', () => {
-            it('should add the strength modifier to the attack roll', () => {
-                let attackRollX = (sinon.stub(attackRoll, "rollADie").returns(10).defaultBehavior.returnValue);
-                attacker.strength = 15;
+        it('should add the strength modifier to the damage dealt', () => {
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
 
-                let expectedModifiedRoll = attacker.modifyAttackRoll(attacker, attackRollX).modifiedRoll;
+            attacker.strength = 15;
 
-                expect(expectedModifiedRoll).to.equal(12);
-            });
+            expect(attacker.calcDamage(attacker, attackRoll)).to.equal(3);
+        });
 
-            it('should add the strength modifier to the damage dealt', () => {
-                attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
+        it('should add the strength modifier to the damage dealt', () => {
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue);
 
-                attacker.strength = 15;
+            attacker.strength = 15;
 
-                expect(attacker.calcDamage(attacker, attackRoll)).to.equal(3);
-            });
-
-            it('should add the strength modifier to the damage dealt', () => {
-                attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue);
-
-                attacker.strength = 15;
-
-                expect(attacker.calcDamage(attacker, attackRoll)).to.equal(5);
-            });
+            expect(attacker.calcDamage(attacker, attackRoll)).to.equal(5);
         });
     });
-    
 });
+
