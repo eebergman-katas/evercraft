@@ -55,9 +55,8 @@ export default class Character extends Abilities {
         return modifiedAttackRoll;
     }
 
-    attack(defender, attackRoll, numberOfSides) {
+    attack(defender, attackRoll) {
         let didItHit = false;
-        attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
 
         didItHit = this.doesHitLand(defender.armorClass, attackRoll);
 
