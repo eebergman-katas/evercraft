@@ -101,10 +101,7 @@ export default class Character extends Abilities {
         return damage;
     }
 
-
     isAlive(defender) {
         return defender.hitPoints > pointOfDeath;
     }
-
-    
 };
