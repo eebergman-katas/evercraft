@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-import Character from '../src/character';
+import Character from '../../../src/resources/js/character';
 const defaultArmorClass = 10;
 const defaultHitPoints = 5;
 const useA20SidedDie = 20;
