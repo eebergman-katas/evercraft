@@ -43,11 +43,14 @@ export default class Character extends Abilities {
         return aDie.roll(numberOfSides);
     }
 
-    rollForAttack(attacker, attackRoll, numberOfSides) {
+    modifyAttackRoll(attacker, attackRoll, numberOfSides) {
+        let strengthModifier = 0,
+            modifiedAttackRoll = 0;
+
         attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
 
-        let strengthModifier = attacker.modifier(attacker.strength);
-        let modifiedAttackRoll = attackRoll + strengthModifier;
+        strengthModifier = attacker.modifier(attacker.strength);
+        modifiedAttackRoll = attackRoll + strengthModifier;
 
         return modifiedAttackRoll;
     }
@@ -103,4 +106,6 @@ export default class Character extends Abilities {
     isAlive(defender) {
         return defender.hitPoints > pointOfDeath;
     }
+
+    
 };

@@ -119,7 +119,7 @@ describe('Character Modification', () => {
             let attackRoll = (sinon.stub(attacker, "rollADie").returns(10).defaultBehavior.returnValue);
             attacker.strength = 15;
 
-            expect(attacker.rollForAttack(attacker, attackRoll)).to.equal(12);
+            expect(attacker.modifyAttackRoll(attacker, attackRoll)).to.equal(12);
         });
 
         it('should add the strength modifier to the damage dealt', () => {
