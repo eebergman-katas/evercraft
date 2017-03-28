@@ -45,14 +45,15 @@ export default class Character extends Abilities {
 
     modifyAttackRoll(attacker, attackRoll, numberOfSides) {
         let strengthModifier = 0,
-            modifiedAttackRoll = 0;
+            attackRollObj = { originalRoll: 0, modifiedRoll: 0 };
 
-        attackRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
+        attackRollObj.originalRoll = this.isADieRollNeeded(attackRoll, numberOfSides);
 
         strengthModifier = attacker.modifier(attacker.strength);
-        modifiedAttackRoll = attackRoll + strengthModifier;
 
-        return modifiedAttackRoll;
+        attackRollObj.modifiedRoll = attackRoll + strengthModifier;
+
+        return attackRollObj;
     }
 
     attack(defender, attackRoll) {
@@ -79,9 +80,10 @@ export default class Character extends Abilities {
         return attackRoll >= defenderArmorScore;
     }
 
+    // remove attackRoll and add damage from calcDamage
     deductHitPoints(defender, attackRoll) {
-        let defaultDamage = 1,
-            damageDealt = defaultDamage;
+        let defaultDamage = 1, // this will go
+            damageDealt = defaultDamage; // go
 
         if (attackRoll === 20) {
             defender.hitPoints -= damageDealt * 2;
@@ -92,12 +94,16 @@ export default class Character extends Abilities {
         return defender;
     }
 
-    calcDamage(attacker) {
-        let defaultDamage = 1,
-            damage = 0;
+    calcDamage(attacker, attackRoll) {
+        let damage = 1,
+            originalRoll = attackRoll.originalRoll;
 
-        damage = defaultDamage + attacker.modifier(attacker.strength);
-
+        if (originalRoll === 20) {
+            damage += (attacker.modifier(attacker.strength) * 2);
+        }
+        else {
+            damage += attacker.modifier(attacker.strength);
+        }
         return damage;
     }
 
