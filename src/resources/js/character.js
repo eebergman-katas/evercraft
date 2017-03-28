@@ -39,9 +39,9 @@ export default class Character extends Abilities {
         return value;
     }
 
-    rollADie(numberOfSides) {
-        return aDie.roll(numberOfSides);
-    }
+    // rollADie(numberOfSides) {
+    //     return aDie.roll(numberOfSides);
+    // }
 
     modifyAttackRoll(attacker, attackRoll, numberOfSides) {
         let strengthModifier = 0,

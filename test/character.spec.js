@@ -1,18 +1,22 @@
+import Character from '../src/resources/js/character';
+import { AttackRoll } from '../src/resources/js/utilities';
+
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-import Character from '../src/resources/js/character';
 const defaultArmorClass = 10;
 const defaultHitPoints = 5;
 const useA20SidedDie = 20;
 
 describe('Character Creation', () => {
     let defender,
-        offensive;
+        offensive,
+        attackRoll;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
         offensive = new Character('Oscar', 'Evil');
+        attackRoll = new AttackRoll();
     });
 
     describe('Character Name', () => {
@@ -47,16 +51,9 @@ describe('Character Creation', () => {
     });
 
     describe('can Attack', () => {
-        it('should allow the character to roll a d20', () => {
-            const minimumDieRoll = 0,
-                maximumDieRoll = 20;
-
-            expect(defender.rollADie(useA20SidedDie)).to.be.within(minimumDieRoll, maximumDieRoll);
-        });
-
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
             let defenderArmorScore = offensive.armorClass;
-            let hitScore = (sinon.stub(defender, "rollADie").returns(11).defaultBehavior.returnValue);
+            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
 
             expect(offensive.doesHitLand(defenderArmorScore, hitScore)).to.be.true;
         });
@@ -66,7 +63,7 @@ describe('Character Creation', () => {
 
         it('should reduce defender hitPoints if offensive lands hit', () => {
             let initalHitPoints = defender.hitPoints;
-            let hitScore = (sinon.stub(offensive, "rollADie").returns(11).defaultBehavior.returnValue);
+            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
 
             defender = offensive.attack(defender, hitScore, useA20SidedDie);
             let postAttackHitPoints = defender.hitPoints;
@@ -76,7 +73,7 @@ describe('Character Creation', () => {
 
         it('should not reduce defender hitPoints if offensive does not land hit', () => {
             let initalHitPoints = offensive.hitPoints;
-            let hitScore = (sinon.stub(defender, "rollADie").returns(3).defaultBehavior.returnValue);
+            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(3).defaultBehavior.returnValue);
 
             offensive = defender.attack(offensive, hitScore);
             let postAttackHitPoints = offensive.hitPoints;
@@ -87,7 +84,7 @@ describe('Character Creation', () => {
         it('should reduce defender hitPoints by double if player rolls a nat 20', () => {
             let postAttackExpectedHealth = 3;
             let initalHitPoints = offensive.hitPoints;
-            let hitScore = (sinon.stub(defender, "rollADie").returns(20).defaultBehavior.returnValue);
+            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue);
 
             offensive = defender.attack(offensive, hitScore);
             let postAttackHitPoints = offensive.hitPoints;
@@ -114,37 +111,48 @@ describe('Character Modification', () => {
         defender = new Character("Jayne", "Good");
     });
 
-    describe('Using ability modifiers', () => {
-        it('should add the strength modifier to the attack roll', () => {
-            let attackRoll = (sinon.stub(attacker, "rollADie").returns(10).defaultBehavior.returnValue);
-            attacker.strength = 15;
 
-            let expectedModifiedRoll = attacker.modifyAttackRoll(attacker, attackRoll).modifiedRoll;
+    describe('Character Modification', () => {
+        let attacker,
+            defender,
+            attackRoll;
 
-            expect(expectedModifiedRoll).to.equal(12);
+        beforeEach(() => {
+            attacker = new Character("Ella", "Neutral");
+            defender = new Character("Jayne", "Good");
+            attackRoll = new AttackRoll();
         });
 
-        it('should add the strength modifier to the damage dealt', () => {
-            let attackRoll = {
-                originalRoll: (sinon.stub(attacker, "rollADie").returns(11).defaultBehavior.returnValue)
-            };
+        describe('Using ability modifiers', () => {
+            it('should add the strength modifier to the attack roll', () => {
+                let attackRollX = (sinon.stub(attackRoll, "rollADie").returns(10).defaultBehavior.returnValue);
+                attacker.strength = 15;
 
-            attacker.strength = 15;
+                let expectedModifiedRoll = attacker.modifyAttackRoll(attacker, attackRollX).modifiedRoll;
 
-            expect(attacker.calcDamage(attacker, attackRoll)).to.equal(3);
+                expect(expectedModifiedRoll).to.equal(12);
+            });
+
+            it('should add the strength modifier to the damage dealt', () => {
+                let attackRollX = {
+                    originalRoll: (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue)
+                };
+
+                attacker.strength = 15;
+
+                expect(attacker.calcDamage(attacker, attackRollX)).to.equal(3);
+            });
+
+            it('should add the strength modifier to the damage dealt', () => {
+                let attackRollX = {
+                    originalRoll: (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue)
+                };
+
+                attacker.strength = 15;
+
+                expect(attacker.calcDamage(attacker, attackRollX)).to.equal(5);
+            });
         });
-
-        it('should double the strength modifier to on a natural 20', () => {
-            let attackRoll = {
-                originalRoll: (sinon.stub(attacker, "rollADie").returns(20).defaultBehavior.returnValue)
-            };
-            attacker.strength = 15;
-
-            expect(attacker.calcDamage(attacker, attackRoll)).to.equal(5);
-        });
-
-
     });
-
-
+    
 });
