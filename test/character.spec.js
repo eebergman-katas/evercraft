@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-import Character from '../../../src/resources/js/character';
+import Character from '../src/resources/js/character';
 const defaultArmorClass = 10;
 const defaultHitPoints = 5;
 const useA20SidedDie = 20;
@@ -127,7 +127,7 @@ describe('Character Modification', () => {
         it('should add the strength modifier to the damage dealt', () => {
             let attackRoll = {
                 originalRoll: (sinon.stub(attacker, "rollADie").returns(11).defaultBehavior.returnValue)
-            }
+            };
 
             attacker.strength = 15;
 
@@ -137,7 +137,7 @@ describe('Character Modification', () => {
         it('should double the strength modifier to on a natural 20', () => {
             let attackRoll = {
                 originalRoll: (sinon.stub(attacker, "rollADie").returns(20).defaultBehavior.returnValue)
-            }
+            };
             attacker.strength = 15;
 
             expect(attacker.calcDamage(attacker, attackRoll)).to.equal(5);
