@@ -134,23 +134,19 @@ describe('Character Modification', () => {
             });
 
             it('should add the strength modifier to the damage dealt', () => {
-                let attackRollX = {
-                    originalRoll: (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue)
-                };
+                attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
 
                 attacker.strength = 15;
 
-                expect(attacker.calcDamage(attacker, attackRollX)).to.equal(3);
+                expect(attacker.calcDamage(attacker, attackRoll)).to.equal(3);
             });
 
             it('should add the strength modifier to the damage dealt', () => {
-                let attackRollX = {
-                    originalRoll: (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue)
-                };
+                attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(20).defaultBehavior.returnValue);
 
                 attacker.strength = 15;
 
-                expect(attacker.calcDamage(attacker, attackRollX)).to.equal(5);
+                expect(attacker.calcDamage(attacker, attackRoll)).to.equal(5);
             });
         });
     });
