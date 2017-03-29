@@ -23,10 +23,8 @@ describe('Character Creation', () => {
     });
 
     describe('Character Name', () => {
-        let peter = new Character('Peter', 'Neutral');
-
         it('should return the name passed to it as the name', () => {
-            expect(peter.name).to.equal('Peter');
+            expect(attacker.name).to.equal('Oscar');
         });
     });
 
@@ -65,7 +63,7 @@ describe('Character Creation', () => {
 
     describe('can be damaged', () => {
 
-        it('should reduce defender hitPoints if offensive lands hit', () => {
+        it('should reduce defender hitPoints if attacker lands hit', () => {
             let initalHitPoints = defender.hitPoints;
 
             attackRoll.originalRoll = rollEnoughToHit;
@@ -78,7 +76,7 @@ describe('Character Creation', () => {
             expect(initalHitPoints).to.be.greaterThan(postAttackHitPoints);
         });
 
-        it('should not reduce defender hitPoints if offensive does not land hit', () => {
+        it('should not reduce defender hitPoints if attacker does not land hit', () => {
             let initalHitPoints = attacker.hitPoints;
 
             attacker = defender.attack(attacker, rollNotEnoughToHit);
@@ -87,7 +85,7 @@ describe('Character Creation', () => {
             expect(initalHitPoints).to.equal(postAttackHitPoints);
         });
 
-        it('should reduce defender hitPoints by double if player rolls a nat 20', () => {
+        it('should reduce defender hitPoints by double if player rolls a critical hit', () => {
             let postAttackExpectedHealth = 3;
 
             attackRoll.originalRoll = rollCriticalHit;
@@ -99,7 +97,7 @@ describe('Character Creation', () => {
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
         });
 
-        it('should return false if asked if alive when HP <= to 0', () => {
+        it('should return false if asked if alive when HP < 1', () => {
             const pointOfDeath = 0;
 
             defender.hitPoints = pointOfDeath;
