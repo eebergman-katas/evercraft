@@ -16,31 +16,32 @@ export default class Character extends Abilities {
         this.name = name;
         this.alignment = alignment;
         this.armorClass = armorClass || defaultArmorClass;
-        this.hitPoints = hitPoints || defaultHitPoints;
+        this.hitPoints = hitPoints   || defaultHitPoints;
         // this.abilities = new Abilities();
     }
 
-    get alignment() { return this._alignment; }
-    set alignment(value) {
-        value = this.validateAlignments(value);
-
-        this._alignment = value;
-    }
-
-    get hitPoints() { return this._hitPoints; }
-    set hitPoints(value) { this._hitPoints = value; }
-
-    validateAlignments(value) {
+    validateAlignments(inputAlignment) {
         const validAlignments = ['good', 'evil', 'neutral'];
-        let localAlignment = String(value);
+        let localAlignment = String(inputAlignment);
 
         if (!(validAlignments.includes(localAlignment.toLocaleLowerCase()))) {
             throw new ReferenceError('Sorry, that is not a valid alignment');
         }
-        return value;
+        return inputAlignment;
+    }
+
+    modifyArmorClass() {
+        
     }
 
     isAlive() {
         return this.hitPoints > pointOfDeath;
     }
+
+
+    get alignment() { return this._alignment; }
+    set alignment(inputAlignment) { this._alignment = this.validateAlignments(inputAlignment); }
+
+    get hitPoints() { return this._hitPoints; }
+    set hitPoints(value) { this._hitPoints = value; }
 };
