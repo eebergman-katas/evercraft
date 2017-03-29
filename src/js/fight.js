@@ -1,6 +1,5 @@
 export default class Fight {
 
-    // consider: calling rollForAttack from in here, instead of making callers do it?
     attack(defender, attackRoll, attacker) {
         let didItHit = false,
             damage = 0;
@@ -30,20 +29,18 @@ export default class Fight {
     }
 
     calcDamage(attacker, attackRoll) {
-        
-        let damage = 1,
-            originalRoll = attackRoll.originalRoll;
+        let damage = 1;
 
-        if (originalRoll === 20) {
-            damage += (attacker.modifier(attacker.strength) * 2);
+        switch (attackRoll.originalRoll) {
+            case 20:
+                damage += (attacker.modifier(attacker.strength) * 2);
+                break;
+            default:
+                damage += attacker.modifier(attacker.strength);
+                break;
         }
-        else {
-            damage += attacker.modifier(attacker.strength);
-        }
+        if (damage < 1) { damage = 1; }
 
-        if (damage < 1) {
-            damage = 1;
-        }
         return damage;
     }
 
