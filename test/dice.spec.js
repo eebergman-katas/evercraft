@@ -12,8 +12,8 @@ describe('PRINT a Roll', () => {
 
     // idea: opportunity to use sinon for reals
 
-    describe('PRINT a Roll', () => {
-        it('PRINT a Roll', () => {
+    describe('Dice Spec is here', () => {
+        it('DICE SPEC WORKS', () => {
             expect(attackRoll.rollADie(20)).to.be.within(1, 20);
         });
     });

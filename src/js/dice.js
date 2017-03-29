@@ -1,6 +1,6 @@
 const aDie = require('d20');
 
-export default class Dice { // default?
+export class Dice { 
     rollADie(numberOfSides) {
         return aDie.roll(numberOfSides);
     }
@@ -17,7 +17,7 @@ class AttackRoll extends Dice {
     modifyAttackRoll(attacker, attackRoll, numberOfSides) {
         let strengthModifier = 0;
 
-        attackRoll = this.isADieRollNeeded(numberOfSides, attackRoll);
+        this.isADieRollNeeded(numberOfSides, attackRoll);
 
         strengthModifier = attacker.modifier(attacker.strength);
 
