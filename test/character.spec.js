@@ -1,4 +1,5 @@
 import Character from '../src/js/character';
+import Abilities from '../src/js/abilities';
 import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
@@ -42,4 +43,16 @@ describe('Character Creation', () => {
             expect(defender.hitPoints).to.equal(defaultHitPoints);
         });
     });
+});
+
+describe('Dexterity modifies Armor Class', () => {
+    it('should add the dex modifier to the armor class', () => {
+        let hero = new Character('Shaggy', 'Good');
+
+        hero.abilities.dexterity = 20;
+
+        console.log(hero);
+
+        expect(hero.armorClass).to.equal(15);
+    })
 });

@@ -14,9 +14,9 @@ export default class Character {
     constructor(name, alignment, armorClass, hitPoints) {
         this.name = name;
         this.alignment = alignment;
-        this.armorClass = armorClass || defaultArmorClass;
-        this.hitPoints = hitPoints   || defaultHitPoints;
         this.abilities = new Abilities();
+        this.armorClass = armorClass || defaultArmorClass;
+        this.hitPoints = hitPoints || defaultHitPoints;
     }
 
     validateAlignments(inputAlignment) {
@@ -30,7 +30,13 @@ export default class Character {
     }
 
     modifyArmorClass() {
-        
+
+        // dexModifier = isNaN(dexModifier) ? 0 : dexModifier;
+
+        let dexScore = this.abilities.dexterity;
+        let dexModifier = this.abilities.modifier(dexScore);
+
+        return defaultArmorClass + dexModifier;
     }
 
     isAlive() {
@@ -42,5 +48,11 @@ export default class Character {
     set alignment(inputAlignment) { this._alignment = this.validateAlignments(inputAlignment); }
 
     get hitPoints() { return this._hitPoints; }
-    set hitPoints(value) { this._hitPoints = value; }
+    set hitPoints(inputHP) { this._hitPoints = inputHP; }
+
+    get armorClass() { return this.modifyArmorClass(); }
+    set armorClass(inputAC) { this._armorClass = inputAC; }
 };
+
+
+

@@ -89,7 +89,7 @@ describe('Strength Modification', () => {
         fight = new Fight();
     });
 
-    describe('Using ability modifiers', () => {
+    describe('Strength modifies attack and damage', () => {
         it('should add the strength modifier to the attack roll', () => {
             attackRoll.originalRoll = rollEnoughToHit;
             attackRoll.rollForAttack(attacker, attackRoll);
