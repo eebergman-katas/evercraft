@@ -1,6 +1,6 @@
 export default class Fight {
 
-    // consider: calling modifyAttackRoll from in here, instead of making callers do it?
+    // consider: calling rollForAttack from in here, instead of making callers do it?
     attack(defender, attackRoll, attacker) {
         let didItHit = false,
             damage = 0;

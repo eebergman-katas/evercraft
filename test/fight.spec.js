@@ -92,11 +92,11 @@ describe('Strength Modification', () => {
     describe('Using ability modifiers', () => {
         it('should add the strength modifier to the attack roll', () => {
             attackRoll.originalRoll = rollEnoughToHit;
-            attackRoll.modifyAttackRoll(attacker, attackRoll);
+            attackRoll.rollForAttack(attacker, attackRoll);
 
             attacker.strength = 15;
 
-            let expectedModifiedRoll = attackRoll.modifyAttackRoll(attacker, attackRoll).modifiedRoll;
+            let expectedModifiedRoll = attackRoll.rollForAttack(attacker, attackRoll).modifiedRoll;
 
             expect(expectedModifiedRoll).to.equal(13);
         });
