@@ -1,5 +1,5 @@
-import Character from '../src/resources/js/character';
-import { AttackRoll } from '../src/resources/js/dice';
+import Character from '../src/js/character';
+import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
 

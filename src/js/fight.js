@@ -15,4 +15,6 @@ class Fight {
         return defender;
     }
 
+    
+
 }

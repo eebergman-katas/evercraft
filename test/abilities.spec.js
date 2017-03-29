@@ -1,4 +1,4 @@
-import Character from '../src/resources/js/character';
+import Character from '../src/js/character';
 const expect = require('chai').expect;
 
 describe('Character Abilities', () => {

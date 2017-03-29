@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-import { AttackRoll } from '../src/resources/js/dice';
+import { AttackRoll } from '../src/js/dice';
 
 describe('PRINT a Roll', () => {
     let attackRoll;
