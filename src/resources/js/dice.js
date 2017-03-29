@@ -1,6 +1,6 @@
 const aDie = require('d20');
 
-export default class Dice {
+export default class Dice { // default?
     rollADie(numberOfSides) {
         return aDie.roll(numberOfSides);
     }

@@ -17,6 +17,7 @@ export default class Character extends Abilities {
         this.alignment = alignment;
         this.armorClass = armorClass || defaultArmorClass;
         this.hitPoints = hitPoints || defaultHitPoints;
+// this.abilities = new Abilities();
     }
 
     get alignment() { return this._alignment; }
@@ -55,16 +56,20 @@ export default class Character extends Abilities {
         let didItHit = false,
         damage = 0;
 
+// consider: calling modifyAttackRoll from in here, instead of making callers do it?
+
         didItHit = this.doesHitLand(defender, attackRoll);
 
         if (didItHit) {
             damage = this.calcDamage(attacker, attackRoll);
             
-            defender = this.deductHitPoints(defender, attackRoll, damage);
+            return this.deductHitPoints(defender, attackRoll, damage); 
         }
         return defender;
     }
 
+
+// attackRoll method?
     isADieRollNeeded(numberOfSides, attackRoll) {
         if (isNaN(attackRoll.originalRoll)) {
             attackRoll.originalRoll = attackRoll.rollADie(numberOfSides);
@@ -100,7 +105,7 @@ export default class Character extends Abilities {
         return damage;
     }
 
-    isAlive(defender) {
-        return defender.hitPoints > pointOfDeath;
+    isAlive() { 
+        return this.hitPoints > pointOfDeath;
     }
 };

@@ -5,7 +5,7 @@ describe('Character Abilities', () => {
     let emikelda;
 
     beforeEach(() => {
-        emikelda = new Character('Emikela', 'neutral');
+        emikelda = new Character('Emikela', 'neutral');  // maybe test Abilities directly?
     });
 
     describe('A new Character has six default ability scores', () => {

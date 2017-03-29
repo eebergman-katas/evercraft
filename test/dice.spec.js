@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-import { AttackRoll } from '../src/resources/js/utilities';
+import { AttackRoll } from '../src/resources/js/dice';
 
 describe('PRINT a Roll', () => {
     let attackRoll;
@@ -9,6 +9,8 @@ describe('PRINT a Roll', () => {
     beforeEach(() => {
         attackRoll = new AttackRoll();
     });
+
+    // idea: opportunity to use sinon for reals
 
     describe('PRINT a Roll', () => {
         it('PRINT a Roll', () => {

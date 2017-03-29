@@ -1,5 +1,5 @@
 import Character from '../src/resources/js/character';
-import { AttackRoll } from '../src/resources/js/utilities';
+import { AttackRoll } from '../src/resources/js/dice';
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
@@ -62,7 +62,7 @@ describe('Character Creation', () => {
 
     describe('can be damaged', () => {
 
-        it('should reduce defender hitPoints if offensive lands hit', () => {
+        it('should reduce defender hitPoints if offensive lands hit', () => { // why is the roll 11?
             let initalHitPoints = defender.hitPoints;
 
             attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
@@ -76,8 +76,9 @@ describe('Character Creation', () => {
         });
 
         it('should not reduce defender hitPoints if offensive does not land hit', () => {
+            const rollThatIsTooLowToGetThroughTheArmor = 3;
             let initalHitPoints = attacker.hitPoints;
-            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(3).defaultBehavior.returnValue);
+            let hitScore = (sinon.stub(attackRoll, "rollADie").returns(rollThatIsTooLowToGetThroughTheArmor).defaultBehavior.returnValue);
 
             attacker = defender.attack(attacker, hitScore);
             let postAttackHitPoints = attacker.hitPoints;
@@ -97,12 +98,12 @@ describe('Character Creation', () => {
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
         });
 
-        it('should return false(is dead) if HP <= to 0', () => {
-            let pointOfDeath = 0;
+        it('should return false if asked if alive when HP <= to 0', () => { 
+            const pointOfDeath = 0;
 
             defender.hitPoints = pointOfDeath;
 
-            expect(defender.isAlive(defender)).to.be.false;
+            expect(defender.isAlive()).to.be.false;
         });
     });
 });
@@ -145,6 +146,14 @@ describe('Character Modification', () => {
             attacker.strength = 15;
 
             expect(attacker.calcDamage(attacker, attackRoll)).to.equal(5);
+        });
+
+        it('should hit for at least 1 point of damage if the attacker is able to hit', () => {
+            attackRoll.originalRoll = (sinon.stub(attackRoll, "rollADie").returns(11).defaultBehavior.returnValue);
+
+            attacker.strength = 1;
+
+            expect(attacker.calcDamage(attacker, attackRoll)).to.equal(1);
         });
     });
 });
