@@ -33,10 +33,10 @@ export default class Fight {
 
         switch (attackRoll.originalRoll) {
             case 20:
-                damage += (attacker.modifier(attacker.strength) * 2);
+                damage += (attacker.abilities.modifier(attacker.abilities.strength) * 2);
                 break;
             default:
-                damage += attacker.modifier(attacker.strength);
+                damage += attacker.abilities.modifier(attacker.abilities.strength);
                 break;
         }
         return (damage < 1) ? 1 : damage;

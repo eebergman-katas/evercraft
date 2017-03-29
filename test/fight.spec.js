@@ -42,7 +42,7 @@ describe('Characters Attack', () => {
 
             let postAttackHitPoints = defender.hitPoints;
 
-            expect(initalHitPoints).to.be.greaterThan(postAttackHitPoints);
+            expect(postAttackHitPoints).to.be.lessThan(initalHitPoints);
         });
 
         it('should not reduce defender hitPoints if attacker does not land hit', () => {
@@ -94,7 +94,7 @@ describe('Strength Modification', () => {
             attackRoll.originalRoll = rollEnoughToHit;
             attackRoll.rollForAttack(attacker, attackRoll);
 
-            attacker.strength = 15;
+            attacker.abilities.strength = 15;
 
             let expectedModifiedRoll = attackRoll.rollForAttack(attacker, attackRoll).modifiedRoll;
 
@@ -104,15 +104,15 @@ describe('Strength Modification', () => {
         it('should add the strength modifier to the damage dealt', () => {
             attackRoll.originalRoll = rollEnoughToHit;
 
-            attacker.strength = 15;
+            attacker.abilities.strength = 15;
 
             expect(fight.calcDamage(attacker, attackRoll)).to.equal(3);
         });
 
-        it('should add the strength modifier to the damage dealt', () => {
+        it('should add the strength modifier to the damage dealt with a critical hit', () => {
             attackRoll.originalRoll = rollCriticalHit;
 
-            attacker.strength = 15;
+            attacker.abilities.strength = 15;
 
             expect(fight.calcDamage(attacker, attackRoll)).to.equal(5);
         });

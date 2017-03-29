@@ -9,15 +9,14 @@ const defaultHitPoints = 5;
 const pointOfDeath = 0;
 
 
-export default class Character extends Abilities {
+export default class Character {
 
     constructor(name, alignment, armorClass, hitPoints) {
-        super();
         this.name = name;
         this.alignment = alignment;
         this.armorClass = armorClass || defaultArmorClass;
         this.hitPoints = hitPoints   || defaultHitPoints;
-        // this.abilities = new Abilities();
+        this.abilities = new Abilities();
     }
 
     validateAlignments(inputAlignment) {
