@@ -51,8 +51,14 @@ describe('Dexterity modifies Armor Class', () => {
 
         hero.abilities.dexterity = 20;
 
-        console.log(hero);
-
         expect(hero.armorClass).to.equal(15);
+    })
+
+    it('should disallow the armorClass to go below 10', () => {
+        let hero = new Character('Shaggy', 'Good');
+
+        hero.abilities.dexterity = 1;
+
+        expect(hero.armorClass).to.equal(10);
     })
 });

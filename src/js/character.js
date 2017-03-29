@@ -31,12 +31,12 @@ export default class Character {
 
     modifyArmorClass() {
 
-        // dexModifier = isNaN(dexModifier) ? 0 : dexModifier;
-
         let dexScore = this.abilities.dexterity;
         let dexModifier = this.abilities.modifier(dexScore);
 
-        return defaultArmorClass + dexModifier;
+        let moddedAC = defaultArmorClass + dexModifier;
+
+        return moddedAC < 10 ? 10 : moddedAC;
     }
 
     isAlive() {
