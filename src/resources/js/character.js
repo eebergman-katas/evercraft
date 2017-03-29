@@ -93,6 +93,7 @@ export default class Character extends Abilities {
     }
 
     calcDamage(attacker, attackRoll) {
+        
         let damage = 1,
             originalRoll = attackRoll.originalRoll;
 
