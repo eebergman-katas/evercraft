@@ -39,9 +39,7 @@ export default class Fight {
                 damage += attacker.modifier(attacker.strength);
                 break;
         }
-        if (damage < 1) { damage = 1; }
-
-        return damage;
+        return (damage < 1) ? 1 : damage;
     }
 
 }
