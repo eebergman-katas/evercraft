@@ -103,6 +103,10 @@ export default class Character extends Abilities {
         else {
             damage += attacker.modifier(attacker.strength);
         }
+
+        if (damage < 1) {
+            damage = 1;
+        }
         return damage;
     }
 
