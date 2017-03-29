@@ -40,18 +40,6 @@ export default class Character extends Abilities {
         return value;
     }
 
-    modifyAttackRoll(attacker, attackRoll, numberOfSides) {
-        let strengthModifier = 0;
-
-        attackRoll = this.isADieRollNeeded(numberOfSides, attackRoll);
-
-        strengthModifier = attacker.modifier(attacker.strength);
-
-        attackRoll.modifiedRoll = attackRoll.originalRoll + strengthModifier;
-
-        return attackRoll;
-    }
-
     attack(defender, attackRoll, attacker) {
         let didItHit = false,
         damage = 0;
@@ -66,16 +54,6 @@ export default class Character extends Abilities {
             return this.deductHitPoints(defender, attackRoll, damage); 
         }
         return defender;
-    }
-
-
-// attackRoll method?
-    isADieRollNeeded(numberOfSides, attackRoll) {
-        if (isNaN(attackRoll.originalRoll)) {
-            attackRoll.originalRoll = attackRoll.rollADie(numberOfSides);
-            return attackRoll;
-        }
-        return attackRoll;
     }
 
     doesHitLand(defender, attackRoll) {

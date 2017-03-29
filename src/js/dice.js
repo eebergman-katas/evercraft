@@ -13,6 +13,26 @@ class AttackRoll extends Dice {
         this.originalRoll = originalRoll;
         this.modifiedRoll = modifiedRoll;
     }
+
+    modifyAttackRoll(attacker, attackRoll, numberOfSides) {
+        let strengthModifier = 0;
+
+        attackRoll = this.isADieRollNeeded(numberOfSides, attackRoll);
+
+        strengthModifier = attacker.modifier(attacker.strength);
+
+        attackRoll.modifiedRoll = attackRoll.originalRoll + strengthModifier;
+
+        return attackRoll;
+    }
+
+    isADieRollNeeded(numberOfSides, attackRoll) {
+        if (isNaN(attackRoll.originalRoll)) {
+            this.originalRoll = this.rollADie(numberOfSides);
+            return attackRoll;
+        }
+        return attackRoll;
+    }
 }
 
 export { AttackRoll };

@@ -54,8 +54,7 @@ describe('Character Creation', () => {
     describe('can Attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
             attackRoll.originalRoll = rollEnoughToHit;
-
-            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+            attackRoll.modifiedRoll = rollEnoughToHit;
 
             expect(attacker.doesHitLand(defender, attackRoll)).to.be.true;
         });
@@ -67,9 +66,9 @@ describe('Character Creation', () => {
             let initalHitPoints = defender.hitPoints;
 
             attackRoll.originalRoll = rollEnoughToHit;
-            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+            attackRoll.modifiedRoll = rollEnoughToHit;
 
-            defender = attacker.attack(defender, attackRoll, attacker);
+            attacker.attack(defender, attackRoll, attacker);
 
             let postAttackHitPoints = defender.hitPoints;
 
@@ -89,7 +88,7 @@ describe('Character Creation', () => {
             let postAttackExpectedHealth = 3;
 
             attackRoll.originalRoll = rollCriticalHit;
-            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+            attackRoll.modifiedRoll = rollCriticalHit;
 
             defender = attacker.attack(defender, attackRoll, attacker);
             let postAttackHitPoints = defender.hitPoints;
@@ -122,11 +121,11 @@ describe('Character Modification', () => {
     describe('Using ability modifiers', () => {
         it('should add the strength modifier to the attack roll', () => {
             attackRoll.originalRoll = rollEnoughToHit;
-            attackRoll = attacker.modifyAttackRoll(attacker, attackRoll);
+            attackRoll = attackRoll.modifyAttackRoll(attacker, attackRoll);
 
             attacker.strength = 15;
 
-            let expectedModifiedRoll = attacker.modifyAttackRoll(attacker, attackRoll).modifiedRoll;
+            let expectedModifiedRoll = attackRoll.modifyAttackRoll(attacker, attackRoll).modifiedRoll;
 
             expect(expectedModifiedRoll).to.equal(13);
         });
