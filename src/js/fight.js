@@ -1,3 +1,4 @@
+'use strict';
 export default class Fight {
 
     attack(defender, attackRoll, attacker) {
@@ -20,10 +21,10 @@ export default class Fight {
 
     deductHitPoints(defender, attackRoll, damage) {
         if (attackRoll.originalRoll === 20) {
-            defender.hitPoints -= damage * 2;
+            defender.hitPoints.currentHP -= damage * 2;
         }
         else {
-            defender.hitPoints -= damage;
+            defender.hitPoints.currentHP -= damage;
         }
         return defender;
     }

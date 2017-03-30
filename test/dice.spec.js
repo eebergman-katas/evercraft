@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 import { AttackRoll } from '../src/js/dice';
 
-describe('PRINT a Roll', () => {
+describe('Dice Spec', () => {
     let attackRoll;
 
     beforeEach(() => {
@@ -12,9 +12,19 @@ describe('PRINT a Roll', () => {
 
     // idea: opportunity to use sinon for reals
 
-    describe('Dice Spec is here', () => {
-        it('DICE SPEC WORKS', () => {
+    describe('Roll dice', () => {
+        it('should return a number between 1 and 20 for a d20', () => {
             expect(attackRoll.rollADie(20)).to.be.within(1, 20);
+        });
+    });
+
+
+    describe('Is a roll needed', () => {
+        it('should check if roll was input by user', () => {
+            let attackRoll = new AttackRoll();
+            let randomRoll = (attackRoll.isARollNeeded()).originalRoll;
+            
+            expect(randomRoll).to.be.within(1, 20);
         });
     });
 });

@@ -33,14 +33,14 @@ describe('Characters Attack', () => {
     describe('can be damaged', () => {
 
         it('should reduce defender hitPoints if attacker lands hit', () => {
-            let initalHitPoints = defender.hitPoints;
+            let initalHitPoints = defender.hitPoints.currentHP;
 
             attackRoll.originalRoll = rollEnoughToHit;
             attackRoll.modifiedRoll = rollEnoughToHit;
 
             fight.attack(defender, attackRoll, attacker);
 
-            let postAttackHitPoints = defender.hitPoints;
+            let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.be.lessThan(initalHitPoints);
         });
@@ -61,7 +61,7 @@ describe('Characters Attack', () => {
             attackRoll.modifiedRoll = rollCriticalHit;
 
             fight.attack(defender, attackRoll, attacker);
-            let postAttackHitPoints = defender.hitPoints;
+            let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
         });
@@ -69,9 +69,9 @@ describe('Characters Attack', () => {
         it('should return false if asked if alive when HP < 1', () => {
             const pointOfDeath = 0;
 
-            defender.hitPoints = pointOfDeath;
+            defender.hitPoints.currentHP = pointOfDeath;
 
-            expect(defender.isAlive()).to.be.false;
+            expect(defender.hitPoints.isAlive(defender)).to.be.false;
         });
     });
 });

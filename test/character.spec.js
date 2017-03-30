@@ -30,7 +30,7 @@ describe('Character Creation', () => {
         });
 
         it("should disallow alignments other than 'Evil', 'Good', and 'Neutral'", () => {
-            expect(() => { let chelsea = new Character('Chelsea', 'Okayish'); }).to.throw(ReferenceError);
+            expect(() => { let chelsea = new Character('Chelsea', 'Okayish'); }).to.throw(Error);
         });
     });
 
@@ -40,44 +40,50 @@ describe('Character Creation', () => {
         });
 
         it('should return the default HitPoints when asked for the hitPoints on a new Character', () => {
-            expect(defender.hitPoints).to.equal(defaultHitPoints);
+            expect(defender.hitPoints.maxHP).to.equal(defaultHitPoints);
         });
     });
 });
 
 describe('Dexterity modifies Armor Class', () => {
+    let player;
+
+    beforeEach(() => {
+        player = new Character('Shaggy', 'Good');
+    });
+
     it('should add the dex modifier to the armor class', () => {
-        let hero = new Character('Shaggy', 'Good');
+        player.abilities.dexterity = 20;
 
-        hero.abilities.dexterity = 20;
-
-        expect(hero.armorClass).to.equal(15);
+        expect(player.armorClass).to.equal(15);
     })
 
     it('should disallow the armorClass to go below 10', () => {
-        let hero = new Character('Shaggy', 'Good');
+        player.abilities.dexterity = 1;
 
-        hero.abilities.dexterity = 1;
-
-        expect(hero.armorClass).to.equal(10);
+        expect(player.armorClass).to.equal(10);
     })
 });
 
-// create hitpoint obj, with max, and current, extract is alive to this, give this to character
 describe('Constitution modifies hit points', () => {
+        let player;
+
+    beforeEach(() => {
+        player = new Character('Shaggy', 'Good');
+    });
+
     it('should add the const modifier to the default hitpoints', () => {
-        let hero = new Character('Shaggy', 'Good');
+        player.abilities.constitution = 20;
+        player.hitPoints.adjustedMaxHP(player);
 
-        hero.abilities.dexterity = 20;
-
-        expect(hero.armorClass).to.equal(15);
+        expect(player.hitPoints.maxHP).to.equal(10);
     })
 
-    // it('should disallow the armorClass to go below 10', () => {
-    //     let hero = new Character('Shaggy', 'Good');
+    it('should disallow the HitPoints maxHP to go below 1', () => {
+        player.abilities.constitution = 1;
+        player.hitPoints.adjustedMaxHP(player);
 
-    //     hero.abilities.dexterity = 1;
+        expect(player.hitPoints.maxHP).to.equal(1);
+    })
 
-    //     expect(hero.armorClass).to.equal(10);
-    // })
 });

@@ -1,3 +1,4 @@
+'use strict';
 const defaultAbilityScore = 10;
 
 export default class Abilities {

@@ -1,22 +1,20 @@
 'use strict';
 
 import Abilities from './abilities';
+import HitPoints from './hitpoints';
 
-const alignmentErr = new ReferenceError('Sorry, that is not a valid alignment');
-const aDie = require('d20');
-const defaultArmorClass = 10;
-const defaultHitPoints = 5;
-const pointOfDeath = 0;
-
+const alignmentErr = new Error('Sorry, that is not a valid alignment'),
+    aDie = require('d20'),
+    defaultArmorClass = 10;
 
 export default class Character {
 
     constructor(name, alignment, armorClass, hitPoints) {
         this.name = name;
         this.alignment = alignment;
-        this.abilities = new Abilities();
         this.armorClass = armorClass || defaultArmorClass;
-        this.hitPoints = hitPoints || defaultHitPoints;
+        this.abilities = new Abilities();
+        this.hitPoints = new HitPoints();
     }
 
     validateAlignments(inputAlignment) {
@@ -24,7 +22,7 @@ export default class Character {
         let localAlignment = String(inputAlignment);
 
         if (!(validAlignments.includes(localAlignment.toLocaleLowerCase()))) {
-            throw new ReferenceError('Sorry, that is not a valid alignment');
+            throw new Error('Sorry, that is not a valid alignment');
         }
         return inputAlignment;
     }
@@ -39,16 +37,10 @@ export default class Character {
         return moddedAC < 10 ? 10 : moddedAC;
     }
 
-    isAlive() {
-        return this.hitPoints > pointOfDeath;
-    }
-
-
     get alignment() { return this._alignment; }
-    set alignment(inputAlignment) { this._alignment = this.validateAlignments(inputAlignment); }
-
-    get hitPoints() { return this._hitPoints; }
-    set hitPoints(inputHP) { this._hitPoints = inputHP; }
+    set alignment(inputAlignment) { 
+        this._alignment = this.validateAlignments(inputAlignment); 
+    }
 
     get armorClass() { return this.modifyArmorClass(); }
     set armorClass(inputAC) { this._armorClass = inputAC; }
