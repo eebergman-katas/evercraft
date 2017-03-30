@@ -15,7 +15,6 @@ export default class Fight {
             damage = this.calcDamage(attacker, attackRoll);
             attacker.tastyXP(attacker);
             this.deductHitPoints(defender, attackRoll, damage);
-            // combatants = {defender, attacker};
 
             return defender, attacker;
         }

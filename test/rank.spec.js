@@ -22,8 +22,7 @@ describe('Level Spec', () => {
 
     describe('Experience is gained for attacking', () => {
         it('should increase the character xp for a succesful attack', () => {
-            let postAttackXP = 0,
-                combatants = {};
+            let postAttackXP = 0;
 
             attackRoll.originalRoll = 15;
             attackRoll.modifiedRoll = 15;
@@ -50,5 +49,21 @@ describe('Level Spec', () => {
 
             expect(newLevel).to.be.greaterThan(originalLevel);
         });
+    })
+
+    describe('Check player\'s level', () => {
+        it('should check the level when xp is gained', () => {
+            let originalLevel = attacker.rank.level;
+            attacker.rank.xp = 1000;
+
+            attackRoll.originalRoll = 15;
+            attackRoll.modifiedRoll = 15;
+
+            fight.attack(defender, attackRoll, attacker);
+
+            let newLevel = attacker.rank.level;
+
+            expect(newLevel).to.be.greaterThan(originalLevel);
+        })
     })
 });

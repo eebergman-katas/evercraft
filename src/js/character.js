@@ -14,7 +14,6 @@ export default class Character {
         this.name = name;
         this.alignment = alignment;
         this.armorClass = armorClass || defaultArmorClass;
-        // this.xp = xp || 0;
         this.abilities = new Abilities();
         this.hitPoints = new HitPoints();
         this.rank = new Rank();
@@ -42,6 +41,7 @@ export default class Character {
 
     tastyXP(attacker) {
         attacker.rank.xp += 10;
+        attacker.rank.checkXP(attacker);
         return attacker;
     }
 
