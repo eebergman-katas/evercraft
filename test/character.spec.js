@@ -56,13 +56,13 @@ describe('Dexterity modifies Armor Class', () => {
         player.abilities.dexterity = 20;
 
         expect(player.armorClass).to.equal(15);
-    })
+    });
 
     it('should disallow the armorClass to go below 10', () => {
         player.abilities.dexterity = 1;
 
         expect(player.armorClass).to.equal(10);
-    })
+    });
 });
 
 describe('Constitution modifies hit points', () => {
@@ -77,13 +77,13 @@ describe('Constitution modifies hit points', () => {
         player.hitPoints.adjustedMaxHP(player);
 
         expect(player.hitPoints.maxHP).to.equal(10);
-    })
+    });
 
     it('should disallow the HitPoints maxHP to go below 1', () => {
         player.abilities.constitution = 1;
         player.hitPoints.adjustedMaxHP(player);
 
         expect(player.hitPoints.maxHP).to.equal(1);
-    })
+    });
 
 });

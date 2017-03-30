@@ -1,9 +1,9 @@
-// 'use strict';
+'use strict';
 const aDie = require('d20');
 
 export class Dice {
     rollADie(numberOfSides) {
-        if (isNaN(numberOfSides)) { numberOfSides = 20 };
+        if (isNaN(numberOfSides)) { numberOfSides = 20; };
         return aDie.roll(numberOfSides);
     }
 }
