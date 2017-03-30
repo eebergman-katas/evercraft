@@ -1,5 +1,5 @@
 'use strict';
-import { AttackRoll } from './dice'
+import { AttackRoll } from './dice';
 
 export default class Fight {
 
@@ -14,7 +14,7 @@ export default class Fight {
         if (didItHit) {
             damage = this.calcDamage(attacker, attackRoll);
             attacker.tastyXP(attacker);
-            this.deductHitPoints(defender, attackRoll, damage)
+            this.deductHitPoints(defender, attackRoll, damage);
             // combatants = {defender, attacker};
 
             return defender, attacker;

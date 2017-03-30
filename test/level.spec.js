@@ -33,6 +33,6 @@ describe('Level Spec', () => {
 
             expect(postAttackXP).to.equal(xpFromOneAttack);
 
-        })
-    })
-})
+        });
+    });
+});

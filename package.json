@@ -2,7 +2,7 @@
   "name": "evercraft",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/eebergman-katas/evercraft.git",
+  "repository": "https://github.com/eebergman/evercraft.git",
   "author": "Erin Bergman <ebergman@pillartechnology.com>",
   "license": "MIT",
   "scripts": {
