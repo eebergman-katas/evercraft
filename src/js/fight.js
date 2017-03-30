@@ -13,7 +13,7 @@ export default class Fight {
 
         if (didItHit) {
             damage = this.calcDamage(attacker, attackRoll);
-            attacker.tastyXP(attacker);
+            attacker.gainXPForAttack(attacker);
             this.deductHitPoints(defender, attackRoll, damage);
 
             return defender, attacker;

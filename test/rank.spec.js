@@ -1,4 +1,3 @@
-// import { Experience } from '../src/js/level';
 import Character from '../src/js/character';
 import Fight from '../src/js/fight';
 import { AttackRoll } from '../src/js/dice';
@@ -7,7 +6,7 @@ const expect = require('chai').expect;
 const xpFromOneAttack = 10;
 
 
-describe('Level Spec', () => {
+describe('Rank Spec', () => {
     let defender,
         attacker,
         fight,
@@ -44,7 +43,7 @@ describe('Level Spec', () => {
         it('should level up the player', () => {
             let originalLevel = attacker.rank.level;
             attacker.rank.xp = 1000;
-            attacker.rank.checkXP(attacker);
+            attacker.rank.checkForLevelUp(attacker);
             let newLevel = attacker.rank.level;
 
             expect(newLevel).to.be.greaterThan(originalLevel);

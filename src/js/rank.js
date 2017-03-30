@@ -7,21 +7,15 @@ export default class Rank {
 
     constructor(xp, level) {
         this.xp = xp || defaultXP;
-        this._level = level || defaultLevel;
+        this.level = level || defaultLevel;
     }
 
-    checkXP(player) {
+    checkForLevelUp(player) { 
         let currentXP = player.rank.xp;
         let currentLvl = player.rank.level;
-        if (currentXP >= (currentLvl * 1000)) {
-            player.rank.level += 1;
-        }
-    }
 
-    get level() {
-        return this._level;
-    }
-    set level(inputLvl) {
-        this._level = inputLvl;
+        if (currentXP >= (currentLvl * 1000)) {
+            player.rank.level++;
+        }
     }
 }

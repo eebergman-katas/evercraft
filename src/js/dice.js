@@ -19,7 +19,7 @@ class AttackRoll extends Dice {
     rollForAttack(attacker, attackRoll, numberOfSides) {
         let strengthModifier = 0;
 
-        this.isARollNeeded(attackRoll, numberOfSides);
+        this.isARollNeeded(attackRoll, numberOfSides); //roll input by user
 
         strengthModifier = attacker.abilities.modifier(attacker.abilities.strength);
 

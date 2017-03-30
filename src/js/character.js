@@ -39,9 +39,9 @@ export default class Character {
         return moddedAC < 10 ? 10 : moddedAC;
     }
 
-    tastyXP(attacker) {
+    gainXPForAttack(attacker) { 
         attacker.rank.xp += 10;
-        attacker.rank.checkXP(attacker);
+        attacker.rank.checkForLevelUp(attacker); 
         return attacker;
     }
 

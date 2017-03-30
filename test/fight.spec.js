@@ -4,8 +4,8 @@ import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
 
-const rollEnoughToHit = 11,
-    rollNotEnoughToHit = 9,
+const rollHigherThanDefaultAC = 11,
+    rollLowerThanDefaultAC = 9,
     rollCriticalHit = 20;
 
 describe('Fight Spec', () => {
@@ -17,14 +17,14 @@ describe('Fight Spec', () => {
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
         attacker = new Character('Oscar', 'Evil');
-        attackRoll = new AttackRoll(),
-            fight = new Fight();
+        attackRoll = new AttackRoll();
+        fight = new Fight();
     });
 
     describe('can Attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            attackRoll.originalRoll = rollEnoughToHit;
-            attackRoll.modifiedRoll = rollEnoughToHit;
+            attackRoll.originalRoll = rollHigherThanDefaultAC;
+            attackRoll.modifiedRoll = rollHigherThanDefaultAC;
 
             expect(fight.doesHitLand(defender, attackRoll)).to.be.true;
         });
@@ -35,8 +35,8 @@ describe('Fight Spec', () => {
         it('should reduce defender hitPoints if attacker lands hit', () => {
             let initalHitPoints = defender.hitPoints.currentHP;
 
-            attackRoll.originalRoll = rollEnoughToHit;
-            attackRoll.modifiedRoll = rollEnoughToHit;
+            attackRoll.originalRoll = rollHigherThanDefaultAC;
+            attackRoll.modifiedRoll = rollHigherThanDefaultAC;
 
             fight.attack(defender, attackRoll, attacker);
 
@@ -48,7 +48,7 @@ describe('Fight Spec', () => {
         it('should not reduce defender hitPoints if attacker does not land hit', () => {
             let initalHitPoints = attacker.hitPoints;
 
-            fight.attack(attacker, rollNotEnoughToHit);
+            fight.attack(attacker, rollHigherThanDefaultAC);
 
             let postAttackHitPoints = attacker.hitPoints;
 
@@ -78,7 +78,7 @@ describe('Fight Spec', () => {
 
     describe('Strength modifies attack and damage', () => {
         it('should add the strength modifier to the attack roll', () => {
-            attackRoll.originalRoll = rollEnoughToHit;
+            attackRoll.originalRoll = rollHigherThanDefaultAC;
             attackRoll.rollForAttack(attacker, attackRoll);
 
             attacker.abilities.strength = 15;
@@ -89,27 +89,30 @@ describe('Fight Spec', () => {
         });
 
         it('should add the strength modifier to the damage dealt', () => {
-            attackRoll.originalRoll = rollEnoughToHit;
+            const modifiedDamage = 3;
+            attackRoll.originalRoll = rollHigherThanDefaultAC;
 
             attacker.abilities.strength = 15;
 
-            expect(fight.calcDamage(attacker, attackRoll)).to.equal(3);
+            expect(fight.calcDamage(attacker, attackRoll)).to.equal(modifiedDamage); 
         });
 
         it('should add the strength modifier to the damage dealt with a critical hit', () => {
+            const critModifiedDamage = 5; 
             attackRoll.originalRoll = rollCriticalHit;
 
             attacker.abilities.strength = 15;
 
-            expect(fight.calcDamage(attacker, attackRoll)).to.equal(5);
+            expect(fight.calcDamage(attacker, attackRoll)).to.equal(critModifiedDamage);
         });
 
         it('should hit for at least 1 point of damage if the attacker is able to hit', () => {
-            attackRoll.originalRoll = rollEnoughToHit;
+            const minimumDamage = 1; 
+            attackRoll.originalRoll = rollHigherThanDefaultAC;
 
             attacker.strength = 1;
 
-            expect(fight.calcDamage(attacker, attackRoll)).to.equal(1);
+            expect(fight.calcDamage(attacker, attackRoll)).to.equal(minimumDamage);
         });
     });
 });
