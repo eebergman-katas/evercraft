@@ -8,7 +8,7 @@ const rollEnoughToHit = 11,
     rollNotEnoughToHit = 9,
     rollCriticalHit = 20;
 
-describe('Characters Attack', () => {
+describe('Fight Spec', () => {
     let defender,
         attacker,
         attackRoll,
@@ -18,7 +18,7 @@ describe('Characters Attack', () => {
         defender = new Character('Danni', 'Good');
         attacker = new Character('Oscar', 'Evil');
         attackRoll = new AttackRoll(),
-        fight = new Fight();
+            fight = new Fight();
     });
 
     describe('can Attack', () => {
@@ -49,7 +49,7 @@ describe('Characters Attack', () => {
             let initalHitPoints = attacker.hitPoints;
 
             fight.attack(attacker, rollNotEnoughToHit);
-            
+
             let postAttackHitPoints = attacker.hitPoints;
 
             expect(initalHitPoints).to.equal(postAttackHitPoints);
@@ -74,20 +74,6 @@ describe('Characters Attack', () => {
 
             expect(defender.hitPoints.isAlive(defender)).to.be.false;
         });
-    });
-});
-
-describe('Strength Modification', () => {
-    let attacker,
-        defender,
-        attackRoll,
-        fight;
-
-    beforeEach(() => {
-        attacker = new Character("Ella", "Neutral");
-        defender = new Character("Jayne", "Good");
-        attackRoll = new AttackRoll(),
-        fight = new Fight();
     });
 
     describe('Strength modifies attack and damage', () => {

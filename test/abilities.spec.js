@@ -1,7 +1,7 @@
 import Character from '../src/js/character';
 const expect = require('chai').expect;
 
-describe('Character Abilities', () => {
+describe('Abilities Spec', () => {
     let emikelda;
 
     beforeEach(() => {

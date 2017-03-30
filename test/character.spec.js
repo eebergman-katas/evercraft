@@ -7,7 +7,7 @@ const expect = require('chai').expect;
 const defaultArmorClass = 10,
     defaultHitPoints = 5;
 
-describe('Character Creation', () => {
+describe('Character Spec', () => {
     let defender,
         attacker;
 
@@ -43,47 +43,47 @@ describe('Character Creation', () => {
             expect(defender.hitPoints.maxHP).to.equal(defaultHitPoints);
         });
     });
-});
 
-describe('Dexterity modifies Armor Class', () => {
-    let player;
 
-    beforeEach(() => {
-        player = new Character('Shaggy', 'Good');
-    });
-
-    it('should add the dex modifier to the armor class', () => {
-        player.abilities.dexterity = 20;
-
-        expect(player.armorClass).to.equal(15);
-    });
-
-    it('should disallow the armorClass to go below 10', () => {
-        player.abilities.dexterity = 1;
-
-        expect(player.armorClass).to.equal(10);
-    });
-});
-
-describe('Constitution modifies hit points', () => {
+    describe('Dexterity modifies Armor Class', () => {
         let player;
 
-    beforeEach(() => {
-        player = new Character('Shaggy', 'Good');
+        beforeEach(() => {
+            player = new Character('Shaggy', 'Good');
+        });
+
+        it('should add the dex modifier to the armor class', () => {
+            player.abilities.dexterity = 20;
+
+            expect(player.armorClass).to.equal(15);
+        });
+
+        it('should disallow the armorClass to go below 10', () => {
+            player.abilities.dexterity = 1;
+
+            expect(player.armorClass).to.equal(10);
+        });
     });
 
-    it('should add the const modifier to the default hitpoints', () => {
-        player.abilities.constitution = 20;
-        player.hitPoints.adjustedMaxHP(player);
+    describe('Constitution modifies hit points', () => {
+        let player;
 
-        expect(player.hitPoints.maxHP).to.equal(10);
+        beforeEach(() => {
+            player = new Character('Shaggy', 'Good');
+        });
+
+        it('should add the const modifier to the default hitpoints', () => {
+            player.abilities.constitution = 20;
+            player.hitPoints.adjustedMaxHP(player);
+
+            expect(player.hitPoints.maxHP).to.equal(10);
+        });
+
+        it('should disallow the HitPoints maxHP to go below 1', () => {
+            player.abilities.constitution = 1;
+            player.hitPoints.adjustedMaxHP(player);
+
+            expect(player.hitPoints.maxHP).to.equal(1);
+        });
     });
-
-    it('should disallow the HitPoints maxHP to go below 1', () => {
-        player.abilities.constitution = 1;
-        player.hitPoints.adjustedMaxHP(player);
-
-        expect(player.hitPoints.maxHP).to.equal(1);
-    });
-
 });
