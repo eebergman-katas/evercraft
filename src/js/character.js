@@ -9,10 +9,11 @@ const alignmentErr = new Error('Sorry, that is not a valid alignment'),
 
 export default class Character {
 
-    constructor(name, alignment, armorClass, hitPoints) {
+    constructor(name, alignment, armorClass, xp) {
         this.name = name;
         this.alignment = alignment;
         this.armorClass = armorClass || defaultArmorClass;
+        this.xp = xp || 0;
         this.abilities = new Abilities();
         this.hitPoints = new HitPoints();
     }
@@ -35,6 +36,11 @@ export default class Character {
         let moddedAC = defaultArmorClass + dexModifier;
 
         return moddedAC < 10 ? 10 : moddedAC;
+    }
+
+    tastyXP(attacker) {
+        attacker.xp += 10;
+        return attacker;
     }
 
     get alignment() { return this._alignment; }

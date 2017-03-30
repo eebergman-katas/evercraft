@@ -3,7 +3,7 @@ const aDie = require('d20');
 
 export class Dice {
     rollADie(numberOfSides) {
-        if (isNaN(numberOfSides)) { numberOfSides = 20; };
+        if (numberOfSides === undefined) { numberOfSides = 20; };
         return aDie.roll(numberOfSides);
     }
 }
@@ -29,11 +29,12 @@ class AttackRoll extends Dice {
     }
 
     isARollNeeded(attackRoll, numberOfSides) {
-        if (undefined === attackRoll) {
+        if (attackRoll === undefined) {
             let newAttackRoll = new AttackRoll();
             newAttackRoll.originalRoll = this.rollADie(numberOfSides);
             return newAttackRoll;
         }
+
         return attackRoll;
     }
 }

@@ -4,25 +4,35 @@ import Fight from '../src/js/fight';
 import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
+const xpFromOneAttack = 10;
 
 
 describe('Level Spec', () => {
     let defender,
         attacker,
-        fight;
+        fight,
+        attackRoll;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
         attacker = new Character('Oscar', 'Evil');
         fight = new Fight();
+        attackRoll = new AttackRoll();
     });
 
     describe('Experience is gained for attacking', () => {
         it('should increase the character xp for a succesful attack', () => {
-            let initalXP = attacker.xp;
-            let attackRoll = 15;
+            let postAttackXP = 0,
+                combatants = {};
 
-            fight.attack()
+            attackRoll.originalRoll = 15;
+            attackRoll.modifiedRoll = 15;
+
+            fight.attack(defender, attackRoll, attacker);
+            postAttackXP = attacker.xp;
+
+            expect(postAttackXP).to.equal(xpFromOneAttack);
+
         })
     })
 })

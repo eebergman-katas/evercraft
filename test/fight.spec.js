@@ -49,6 +49,7 @@ describe('Characters Attack', () => {
             let initalHitPoints = attacker.hitPoints;
 
             fight.attack(attacker, rollNotEnoughToHit);
+            
             let postAttackHitPoints = attacker.hitPoints;
 
             expect(initalHitPoints).to.equal(postAttackHitPoints);

@@ -1,18 +1,25 @@
 'use strict';
+import { AttackRoll } from './dice'
+
 export default class Fight {
 
     attack(defender, attackRoll, attacker) {
         let didItHit = false,
-            damage = 0;
+            damage = 0,
+            roll = new AttackRoll(),
+            combatants = {defender, attacker};
 
         didItHit = this.doesHitLand(defender, attackRoll);
 
         if (didItHit) {
             damage = this.calcDamage(attacker, attackRoll);
+            attacker.tastyXP(attacker);
+            this.deductHitPoints(defender, attackRoll, damage)
+            // combatants = {defender, attacker};
 
-            return this.deductHitPoints(defender, attackRoll, damage);
+            return defender, attacker;
         }
-        return defender;
+        return defender, attacker;
     }
 
     doesHitLand(defender, attackRoll) {
