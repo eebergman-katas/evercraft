@@ -2,6 +2,7 @@
 
 import Abilities from './abilities';
 import HitPoints from './hitpoints';
+import Rank from './rank';
 
 const alignmentErr = new Error('Sorry, that is not a valid alignment'),
     aDie = require('d20'),
@@ -13,9 +14,10 @@ export default class Character {
         this.name = name;
         this.alignment = alignment;
         this.armorClass = armorClass || defaultArmorClass;
-        this.xp = xp || 0;
+        // this.xp = xp || 0;
         this.abilities = new Abilities();
         this.hitPoints = new HitPoints();
+        this.rank = new Rank();
     }
 
     validateAlignments(inputAlignment) {
@@ -39,7 +41,7 @@ export default class Character {
     }
 
     tastyXP(attacker) {
-        attacker.xp += 10;
+        attacker.rank.xp += 10;
         return attacker;
     }
 

@@ -29,10 +29,25 @@ describe('Level Spec', () => {
             attackRoll.modifiedRoll = 15;
 
             fight.attack(defender, attackRoll, attacker);
-            postAttackXP = attacker.xp;
+            postAttackXP = attacker.rank.xp;
 
             expect(postAttackXP).to.equal(xpFromOneAttack);
-
         });
     });
+
+    describe('Player has a level', () => {
+        it('should return 1 for default level', () => {
+            expect(defender.rank.level).to.equal(1);
+        })
+    })
+
+    describe('Player can level up after 1000 xp', () => {
+        it('should level up the player', () => {
+            let originalLevel = attacker.rank.level;
+            attacker.rank.xp = 1000;
+            let newLevel = attacker.rank.level;
+
+            expect(newLevel).to.be.greaterThan(originalLevel);
+        });
+    })
 });
