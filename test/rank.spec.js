@@ -45,6 +45,7 @@ describe('Level Spec', () => {
         it('should level up the player', () => {
             let originalLevel = attacker.rank.level;
             attacker.rank.xp = 1000;
+            attacker.rank.checkXP(attacker);
             let newLevel = attacker.rank.level;
 
             expect(newLevel).to.be.greaterThan(originalLevel);
