@@ -18,14 +18,15 @@ class AttackRoll extends Dice {
 
     rollForAttack(attacker, userRoll, numberOfSides) {
         let attackRoll = new AttackRoll();
-
         let strengthModifier = 0;
+        let earnedLevels = (attacker.rank.level - 1);
 
-        attackRoll = this.isARollNeeded(userRoll, numberOfSides); // rename roll input by user
+        attackRoll = this.isARollNeeded(userRoll, numberOfSides);
 
         strengthModifier = attacker.abilities.modifier(attacker.abilities.strength);
 
-        attackRoll.modifiedRoll = attackRoll.originalRoll + strengthModifier;
+        attackRoll.modifiedRoll = attackRoll.originalRoll + strengthModifier + 
+            earnedLevels;
 
         return attackRoll;
     }
