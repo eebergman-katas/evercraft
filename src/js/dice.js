@@ -16,25 +16,27 @@ class AttackRoll extends Dice {
         this.modifiedRoll = modifiedRoll;
     }
 
-    rollForAttack(attacker, attackRoll, numberOfSides) {
+    rollForAttack(attacker, userRoll, numberOfSides) {
+        let attackRoll = new AttackRoll();
+
         let strengthModifier = 0;
 
-        this.isARollNeeded(attackRoll, numberOfSides); //roll input by user
+        attackRoll = this.isARollNeeded(userRoll, numberOfSides); // rename roll input by user
 
         strengthModifier = attacker.abilities.modifier(attacker.abilities.strength);
 
-        this.modifiedRoll = this.originalRoll + strengthModifier;
+        attackRoll.modifiedRoll = attackRoll.originalRoll + strengthModifier;
 
         return attackRoll;
     }
 
-    isARollNeeded(attackRoll, numberOfSides) {
-        if (attackRoll === undefined) {
-            let newAttackRoll = new AttackRoll();
-            newAttackRoll.originalRoll = this.rollADie(numberOfSides);
-            return newAttackRoll;
+    isARollNeeded(userRoll, numberOfSides) {
+        let attackRoll = new AttackRoll();
+        if (userRoll === undefined) {
+            attackRoll.originalRoll = this.rollADie(numberOfSides);
+            return attackRoll;
         }
-
+        attackRoll.originalRoll = userRoll;
         return attackRoll;
     }
 }

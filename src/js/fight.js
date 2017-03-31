@@ -1,6 +1,7 @@
 'use strict';
 import { AttackRoll } from './dice';
 
+//combat
 export default class Fight {
 
     attack(defender, attackRoll, attacker) {
@@ -19,6 +20,11 @@ export default class Fight {
             return defender, attacker;
         }
         return defender, attacker;
+    }
+
+// attack
+    combat(attacker, defender, userRoll) {
+        
     }
 
     doesHitLand(defender, attackRoll) {

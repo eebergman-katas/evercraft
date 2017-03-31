@@ -23,10 +23,21 @@ describe('Fight Spec', () => {
 
     describe('can Attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            attackRoll.originalRoll = rollHigherThanDefaultAC;
-            attackRoll.modifiedRoll = rollHigherThanDefaultAC;
+            // attackRoll.originalRoll = rollHigherThanDefaultAC;
+            // attackRoll.modifiedRoll = rollHigherThanDefaultAC;
+            
+            // if this asked for defender hp to go down would it work?
+            // expect(fight.doesHitLand(defender, rollHigherThanDefaultAC)).to.be.true;
 
-            expect(fight.doesHitLand(defender, attackRoll)).to.be.true;
+
+
+            console.log("NMNMNMNMNMNMNNMNMNMNMMNMNMNMNMNMNMNMNMNMNMNMNMNMNMNM")
+
+            fight.attack(defender, rollHigherThanDefaultAC, attacker);
+
+            expect(defender.hitPoints.currentHP).to.equal(4); // broke
+
+
         });
     });
 
@@ -78,15 +89,14 @@ describe('Fight Spec', () => {
 
     describe('Strength modifies attack and damage', () => {
         it('should add the strength modifier to the attack roll', () => {
-            attackRoll.originalRoll = rollHigherThanDefaultAC;
-            attackRoll.rollForAttack(attacker, attackRoll);
-
             attacker.abilities.strength = 15;
+            
+            attackRoll = attackRoll.rollForAttack(attacker, rollHigherThanDefaultAC);
 
-            let expectedModifiedRoll = attackRoll.rollForAttack(attacker, attackRoll).modifiedRoll;
+            let expectedModifiedRoll = attackRoll.modifiedRoll;
 
             expect(expectedModifiedRoll).to.equal(13);
-        });
+        }); 
 
         it('should add the strength modifier to the damage dealt', () => {
             const modifiedDamage = 3;

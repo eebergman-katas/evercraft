@@ -21,7 +21,6 @@ describe('Dice Spec', () => {
 
     describe('Is a roll needed', () => {
         it('should check if roll was input by user', () => {
-            let attackRoll = new AttackRoll();
             let randomRoll = (attackRoll.isARollNeeded()).originalRoll;
             
             expect(randomRoll).to.be.within(1, 20);
