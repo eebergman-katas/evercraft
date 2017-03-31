@@ -122,15 +122,41 @@ Classes that a character can have.
 
 > As a player I want to play a Fighter so that I can kick ass and take names
 
-- attacks roll is increased by 1 for every level instead of every other level
-- has 10 hit points per level instead of 5
+- Base 10 HP + const mod
+- Gains 6 HP + const mod per level
+- Damage is 1d10 * every other level
+- +1 to Strength Mod * level
+- +1 to Const Mod * level
+- Any alignment
+
+> As a player I want to play a Ranger so that I can defeat my enemies from a distance
+
+- Base 10 HP + const mod
+- Gains 6 HP + const mod per level
+- Damage is 1d10 * every other level
+- +1 to Strength Mod * level
+- +1 to Dex Mod * level
+- Any alignment
 
 > As a player I want to play a Rogue so that I can defeat my enemies with finesse
 
-- does triple damage on critical hits
-- ignores an opponents Dexterity modifier (if positive) to Armor Class when attacking
-- adds Dexterity modifier to attacks instead of Strength
+- Base 8 HP + const mod
+- Gains 5 HP + const mod per level
+- Damage is 1d8 * every other level
+- +1 to Dex Mod * level
+- +1 to Intel Mod * level
 - cannot have Good alignment
+
+> As a player I want to play a Wizard so that I can defeat my enemies with magic
+
+- Base 6 HP + const mod
+- Gains 4 HP + const mod per level
+- Damage is 1d6 * every other level
+- +1 to Const Mod * level
+- +1 to Wisdom Mod * level
+- cannot have Evil alignment
+
+<!--
 
 > As a player I want to play a Monk so that I can enjoy being an Asian martial-arts archetype in a Medieval European setting
 
@@ -146,6 +172,8 @@ Classes that a character can have.
 - does triple damage when critting on an Evil character (i.e. add the +2 bonus for a regular attack, and then triple that)
 - attacks roll is increased by 1 for every level instead of every other level
 - can only have Good alignment
+
+-->
 
 ### Iteration 3 - Races
 
