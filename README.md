@@ -152,7 +152,7 @@ Classes that a character can have.
 - Base 6 HP + const mod
 - Gains 4 HP + const mod per level
 - Damage is 1d6 * every other level
-- +1 to Intel Mod * level
+- +1 to Const Mod * level
 - +1 to Wisdom Mod * level
 - cannot have Evil alignment
 
