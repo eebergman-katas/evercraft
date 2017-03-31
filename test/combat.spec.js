@@ -27,7 +27,7 @@ describe('Combat Spec', () => {
                 postAttackHitPoints = 0;
 
             combatants = combat.attack(attacker, defender, rollHigherThanDefaultAC);
-            postAttackHitPoints = combatants.defender.hitPoints.currentHP
+            postAttackHitPoints = combatants.defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.equal(4);
         });
