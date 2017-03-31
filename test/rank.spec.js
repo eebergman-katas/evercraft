@@ -4,6 +4,7 @@ import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
 const xpFromOneAttack = 10;
+const rollHigherThanDefaultAC = 11;
 
 
 describe('Rank Spec', () => {
@@ -23,10 +24,7 @@ describe('Rank Spec', () => {
         it('should increase the character xp for a succesful attack', () => {
             let postAttackXP = 0;
 
-            attackRoll.originalRoll = 15;
-            attackRoll.modifiedRoll = 15;
-
-            combat.attackOld(defender, attackRoll, attacker);
+            combat.attack(attacker, defender, rollHigherThanDefaultAC);
             postAttackXP = attacker.rank.xp;
 
             expect(postAttackXP).to.equal(xpFromOneAttack);
@@ -55,10 +53,7 @@ describe('Rank Spec', () => {
             let originalLevel = attacker.rank.level;
             attacker.rank.xp = 1000;
 
-            attackRoll.originalRoll = 15;
-            attackRoll.modifiedRoll = 15;
-
-            combat.attackOld(defender, attackRoll, attacker);
+            combat.attack(attacker, defender, rollHigherThanDefaultAC);
 
             let newLevel = attacker.rank.level;
 
@@ -71,10 +66,7 @@ describe('Rank Spec', () => {
             let hpAfterLevelTwo = 10;
             attacker.rank.xp = 999;
 
-            attackRoll.originalRoll = 11;
-            attackRoll.modifiedRoll = 11;
-            
-            combat.attackOld(defender, attackRoll, attacker);
+            combat.attack(attacker, defender, rollHigherThanDefaultAC);
 
             expect(attacker.hitPoints.maxHP).to.equal(hpAfterLevelTwo);
         });

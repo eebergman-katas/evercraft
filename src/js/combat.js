@@ -4,24 +4,6 @@ import { AttackRoll } from './dice';
 //combat
 export default class Combat {
 
-    attackOld(defender, attackRoll, attacker) {
-        let didItHit = false,
-            damage = 0,
-            roll = new AttackRoll(),
-            combatants = { defender, attacker };
-
-        didItHit = this.doesHitLand(defender, attackRoll);
-
-        if (didItHit) {
-            damage = this.calcDamage(attacker, attackRoll);
-            attacker.gainXPForAttack(attacker);
-            this.deductHitPoints(defender, attackRoll, damage);
-
-            return combatants;
-        }
-        return combatants;
-    }
-
     attack(attacker, defender, userRoll) {
         let didItHit = false,
             damage = 0,
@@ -29,9 +11,8 @@ export default class Combat {
             combatants = { defender, attacker };
 
         attackRoll = attackRoll.rollForAttack(attacker, userRoll);
-        console.log(attackRoll);
 
-        console.log(didItHit = this.doesHitLand(defender, attackRoll));
+        didItHit = this.doesHitLand(defender, attackRoll);
 
         if (didItHit) {
             damage = this.calcDamage(attacker, attackRoll);

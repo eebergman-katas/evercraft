@@ -27,7 +27,6 @@ describe('Combat Spec', () => {
                 postAttackHitPoints = 0;
 
             combatants = combat.attack(attacker, defender, rollHigherThanDefaultAC);
-
             postAttackHitPoints = combatants.defender.hitPoints.currentHP
 
             expect(postAttackHitPoints).to.equal(4);
@@ -39,22 +38,17 @@ describe('Combat Spec', () => {
         it('should reduce defender hitPoints if attacker lands hit', () => {
             let initalHitPoints = defender.hitPoints.currentHP;
 
-            attackRoll.originalRoll = rollHigherThanDefaultAC;
-            attackRoll.modifiedRoll = rollHigherThanDefaultAC;
-
-            combat.attackOld(defender, attackRoll, attacker);
-
+            combat.attack(attacker, defender, rollHigherThanDefaultAC);
             let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.be.lessThan(initalHitPoints);
         });
 
         it('should not reduce defender hitPoints if attacker does not land hit', () => {
-            let initalHitPoints = attacker.hitPoints;
+            let initalHitPoints = defender.hitPoints.currentHP;
 
-            combat.attackOld(attacker, rollHigherThanDefaultAC);
-
-            let postAttackHitPoints = attacker.hitPoints;
+            combat.attack(attacker, defender, rollLowerThanDefaultAC);
+            let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(initalHitPoints).to.equal(postAttackHitPoints);
         });
@@ -62,10 +56,7 @@ describe('Combat Spec', () => {
         it('should reduce defender hitPoints by double if player rolls a critical hit', () => {
             let postAttackExpectedHealth = 3;
 
-            attackRoll.originalRoll = rollCriticalHit;
-            attackRoll.modifiedRoll = rollCriticalHit;
-
-            combat.attackOld(defender, attackRoll, attacker);
+            combat.attack(attacker, defender, rollCriticalHit);
             let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
