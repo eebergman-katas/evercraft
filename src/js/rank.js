@@ -19,7 +19,4 @@ export default class Rank {
             player.hitPoints.adjustedMaxHP(player);
         }
     }
-
-    // get level() { this._level = level; }
-    // set level(inputLevel) { this._level = inputLevel; }
 }
