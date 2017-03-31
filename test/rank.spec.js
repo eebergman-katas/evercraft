@@ -26,7 +26,7 @@ describe('Rank Spec', () => {
             attackRoll.originalRoll = 15;
             attackRoll.modifiedRoll = 15;
 
-            combat.attack(defender, attackRoll, attacker);
+            combat.attackOld(defender, attackRoll, attacker);
             postAttackXP = attacker.rank.xp;
 
             expect(postAttackXP).to.equal(xpFromOneAttack);
@@ -58,7 +58,7 @@ describe('Rank Spec', () => {
             attackRoll.originalRoll = 15;
             attackRoll.modifiedRoll = 15;
 
-            combat.attack(defender, attackRoll, attacker);
+            combat.attackOld(defender, attackRoll, attacker);
 
             let newLevel = attacker.rank.level;
 
@@ -74,7 +74,7 @@ describe('Rank Spec', () => {
             attackRoll.originalRoll = 11;
             attackRoll.modifiedRoll = 11;
             
-            combat.attack(defender, attackRoll, attacker);
+            combat.attackOld(defender, attackRoll, attacker);
 
             expect(attacker.hitPoints.maxHP).to.equal(hpAfterLevelTwo);
         });

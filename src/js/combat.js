@@ -4,7 +4,7 @@ import { AttackRoll } from './dice';
 //combat
 export default class Combat {
 
-    attack(defender, attackRoll, attacker) {
+    attackOld(defender, attackRoll, attacker) {
         let didItHit = false,
             damage = 0,
             roll = new AttackRoll(),

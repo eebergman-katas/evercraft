@@ -49,7 +49,7 @@ describe('Combat Spec', () => {
             attackRoll.originalRoll = rollHigherThanDefaultAC;
             attackRoll.modifiedRoll = rollHigherThanDefaultAC;
 
-            combat.attack(defender, attackRoll, attacker);
+            combat.attackOld(defender, attackRoll, attacker);
 
             let postAttackHitPoints = defender.hitPoints.currentHP;
 
@@ -59,7 +59,7 @@ describe('Combat Spec', () => {
         it('should not reduce defender hitPoints if attacker does not land hit', () => {
             let initalHitPoints = attacker.hitPoints;
 
-            combat.attack(attacker, rollHigherThanDefaultAC);
+            combat.attackOld(attacker, rollHigherThanDefaultAC);
 
             let postAttackHitPoints = attacker.hitPoints;
 
@@ -72,7 +72,7 @@ describe('Combat Spec', () => {
             attackRoll.originalRoll = rollCriticalHit;
             attackRoll.modifiedRoll = rollCriticalHit;
 
-            combat.attack(defender, attackRoll, attacker);
+            combat.attackOld(defender, attackRoll, attacker);
             let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
