@@ -109,14 +109,14 @@ Classes that a character can have.
 
 > As a player I want a character to have a class that customizes its capabilities so that I can play more interesting characters
 
-##### Ideas
+##### Basic Class
 
-- changes in hit points
-- changes in attack and damage
-- increased critical range or damage
-- bonuses/penalties versus other classes
-- special abilities
-- alignment limitations
+- Modifies base HP
+- Modifies hp gain on lvl up
+- Modifies damage per level
+- Modifies 1st ability per lvlup
+- Modifies 2nd ability per lvlup
+- May restrict alignment
 
 ##### Samples
 
