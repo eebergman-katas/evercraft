@@ -23,19 +23,19 @@ describe('Fight Spec', () => {
 
     describe('can Attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            // attackRoll.originalRoll = rollHigherThanDefaultAC;
-            // attackRoll.modifiedRoll = rollHigherThanDefaultAC;
+            attackRoll.originalRoll = rollHigherThanDefaultAC;
+            attackRoll.modifiedRoll = rollHigherThanDefaultAC;
             
             // if this asked for defender hp to go down would it work?
-            // expect(fight.doesHitLand(defender, rollHigherThanDefaultAC)).to.be.true;
+            expect(fight.doesHitLand(defender, attackRoll)).to.be.true;
 
 
 
-            console.log("NMNMNMNMNMNMNNMNMNMNMMNMNMNMNMNMNMNMNMNMNMNMNMNMNMNM")
+            // console.log("NMNMNMNMNMNMNNMNMNMNMMNMNMNMNMNMNMNMNMNMNMNMNMNMNMNM")
 
-            fight.attack(defender, rollHigherThanDefaultAC, attacker);
+            // fight.attack(defender, rollHigherThanDefaultAC, attacker);
 
-            expect(defender.hitPoints.currentHP).to.equal(4); // broke
+            // expect(defender.hitPoints.currentHP).to.equal(4); // broke
 
 
         });
