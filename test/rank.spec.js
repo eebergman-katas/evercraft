@@ -1,5 +1,5 @@
 import Character from '../src/js/character';
-import Fight from '../src/js/fight';
+import Combat from '../src/js/combat';
 import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
@@ -9,13 +9,13 @@ const xpFromOneAttack = 10;
 describe('Rank Spec', () => {
     let defender,
         attacker,
-        fight,
+        combat,
         attackRoll;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
         attacker = new Character('Oscar', 'Evil');
-        fight = new Fight();
+        combat = new Combat();
         attackRoll = new AttackRoll();
     });
 
@@ -26,7 +26,7 @@ describe('Rank Spec', () => {
             attackRoll.originalRoll = 15;
             attackRoll.modifiedRoll = 15;
 
-            fight.attack(defender, attackRoll, attacker);
+            combat.attack(defender, attackRoll, attacker);
             postAttackXP = attacker.rank.xp;
 
             expect(postAttackXP).to.equal(xpFromOneAttack);
@@ -58,7 +58,7 @@ describe('Rank Spec', () => {
             attackRoll.originalRoll = 15;
             attackRoll.modifiedRoll = 15;
 
-            fight.attack(defender, attackRoll, attacker);
+            combat.attack(defender, attackRoll, attacker);
 
             let newLevel = attacker.rank.level;
 
@@ -74,7 +74,7 @@ describe('Rank Spec', () => {
             attackRoll.originalRoll = 11;
             attackRoll.modifiedRoll = 11;
             
-            fight.attack(defender, attackRoll, attacker);
+            combat.attack(defender, attackRoll, attacker);
 
             expect(attacker.hitPoints.maxHP).to.equal(hpAfterLevelTwo);
         });

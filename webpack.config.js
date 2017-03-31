@@ -4,7 +4,7 @@ module.exports = {
 
     entry: {
         app: [
-            './src/app.js','./src/character.js, ./src/dice.js, ./src/fight.js'
+            './src/app.js','./src/character.js, ./src/dice.js, ./src/combat.js'
         ],
         test: [
             './test/app.spec.js', './test/character.spec.js'

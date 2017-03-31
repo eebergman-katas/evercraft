@@ -2,7 +2,7 @@
 import { AttackRoll } from './dice';
 
 //combat
-export default class Fight {
+export default class Combat {
 
     attack(defender, attackRoll, attacker) {
         let didItHit = false,

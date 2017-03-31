@@ -1,4 +1,4 @@
-import Fight from '../src/js/fight';
+import Combat from '../src/js/combat';
 import Character from '../src/js/character';
 import { AttackRoll } from '../src/js/dice';
 
@@ -8,17 +8,17 @@ const rollHigherThanDefaultAC = 11,
     rollLowerThanDefaultAC = 9,
     rollCriticalHit = 20;
 
-describe('Fight Spec', () => {
+describe('Combat Spec', () => {
     let defender,
         attacker,
         attackRoll,
-        fight;
+        combat;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
         attacker = new Character('Oscar', 'Evil');
         attackRoll = new AttackRoll();
-        fight = new Fight();
+        combat = new Combat();
     });
 
     describe('can Attack', () => {
@@ -27,13 +27,13 @@ describe('Fight Spec', () => {
             attackRoll.modifiedRoll = rollHigherThanDefaultAC;
             
             // if this asked for defender hp to go down would it work?
-            expect(fight.doesHitLand(defender, attackRoll)).to.be.true;
+            expect(combat.doesHitLand(defender, attackRoll)).to.be.true;
 
 
 
             // console.log("NMNMNMNMNMNMNNMNMNMNMMNMNMNMNMNMNMNMNMNMNMNMNMNMNMNM")
 
-            // fight.attack(defender, rollHigherThanDefaultAC, attacker);
+            // combat.attack(defender, rollHigherThanDefaultAC, attacker);
 
             // expect(defender.hitPoints.currentHP).to.equal(4); // broke
 
@@ -49,7 +49,7 @@ describe('Fight Spec', () => {
             attackRoll.originalRoll = rollHigherThanDefaultAC;
             attackRoll.modifiedRoll = rollHigherThanDefaultAC;
 
-            fight.attack(defender, attackRoll, attacker);
+            combat.attack(defender, attackRoll, attacker);
 
             let postAttackHitPoints = defender.hitPoints.currentHP;
 
@@ -59,7 +59,7 @@ describe('Fight Spec', () => {
         it('should not reduce defender hitPoints if attacker does not land hit', () => {
             let initalHitPoints = attacker.hitPoints;
 
-            fight.attack(attacker, rollHigherThanDefaultAC);
+            combat.attack(attacker, rollHigherThanDefaultAC);
 
             let postAttackHitPoints = attacker.hitPoints;
 
@@ -72,7 +72,7 @@ describe('Fight Spec', () => {
             attackRoll.originalRoll = rollCriticalHit;
             attackRoll.modifiedRoll = rollCriticalHit;
 
-            fight.attack(defender, attackRoll, attacker);
+            combat.attack(defender, attackRoll, attacker);
             let postAttackHitPoints = defender.hitPoints.currentHP;
 
             expect(postAttackHitPoints).to.equal(postAttackExpectedHealth);
@@ -104,7 +104,7 @@ describe('Fight Spec', () => {
 
             attacker.abilities.strength = 15;
 
-            expect(fight.calcDamage(attacker, attackRoll)).to.equal(modifiedDamage); 
+            expect(combat.calcDamage(attacker, attackRoll)).to.equal(modifiedDamage); 
         });
 
         it('should add the strength modifier to the damage dealt with a critical hit', () => {
@@ -113,7 +113,7 @@ describe('Fight Spec', () => {
 
             attacker.abilities.strength = 15;
 
-            expect(fight.calcDamage(attacker, attackRoll)).to.equal(critModifiedDamage);
+            expect(combat.calcDamage(attacker, attackRoll)).to.equal(critModifiedDamage);
         });
 
         it('should hit for at least 1 point of damage if the attacker is able to hit', () => {
@@ -122,7 +122,7 @@ describe('Fight Spec', () => {
 
             attacker.strength = 1;
 
-            expect(fight.calcDamage(attacker, attackRoll)).to.equal(minimumDamage);
+            expect(combat.calcDamage(attacker, attackRoll)).to.equal(minimumDamage);
         });
     });
 });
