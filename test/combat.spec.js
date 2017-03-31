@@ -23,21 +23,14 @@ describe('Combat Spec', () => {
 
     describe('can Attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            attackRoll.originalRoll = rollHigherThanDefaultAC;
-            attackRoll.modifiedRoll = rollHigherThanDefaultAC;
-            
-            // if this asked for defender hp to go down would it work?
-            expect(combat.doesHitLand(defender, attackRoll)).to.be.true;
+            let combatants = {},
+                postAttackHitPoints = 0;
 
+            combatants = combat.attack(attacker, defender, rollHigherThanDefaultAC);
 
+            postAttackHitPoints = combatants.defender.hitPoints.currentHP
 
-            // console.log("NMNMNMNMNMNMNNMNMNMNMMNMNMNMNMNMNMNMNMNMNMNMNMNMNMNM")
-
-            // combat.attack(defender, rollHigherThanDefaultAC, attacker);
-
-            // expect(defender.hitPoints.currentHP).to.equal(4); // broke
-
-
+            expect(postAttackHitPoints).to.equal(4);
         });
     });
 
@@ -90,13 +83,13 @@ describe('Combat Spec', () => {
     describe('Strength modifies attack and damage', () => {
         it('should add the strength modifier to the attack roll', () => {
             attacker.abilities.strength = 15;
-            
+
             attackRoll = attackRoll.rollForAttack(attacker, rollHigherThanDefaultAC);
 
             let expectedModifiedRoll = attackRoll.modifiedRoll;
 
             expect(expectedModifiedRoll).to.equal(13);
-        }); 
+        });
 
         it('should add the strength modifier to the damage dealt', () => {
             const modifiedDamage = 3;
@@ -104,11 +97,11 @@ describe('Combat Spec', () => {
 
             attacker.abilities.strength = 15;
 
-            expect(combat.calcDamage(attacker, attackRoll)).to.equal(modifiedDamage); 
+            expect(combat.calcDamage(attacker, attackRoll)).to.equal(modifiedDamage);
         });
 
         it('should add the strength modifier to the damage dealt with a critical hit', () => {
-            const critModifiedDamage = 5; 
+            const critModifiedDamage = 5;
             attackRoll.originalRoll = rollCriticalHit;
 
             attacker.abilities.strength = 15;
@@ -117,7 +110,7 @@ describe('Combat Spec', () => {
         });
 
         it('should hit for at least 1 point of damage if the attacker is able to hit', () => {
-            const minimumDamage = 1; 
+            const minimumDamage = 1;
             attackRoll.originalRoll = rollHigherThanDefaultAC;
 
             attacker.strength = 1;
