@@ -16,6 +16,10 @@ export default class Rank {
 
         if (currentXP >= (currentLvl * 1000)) {
             player.rank.level++;
+            player.hitPoints.adjustedMaxHP(player);
         }
     }
+
+    // get level() { this._level = level; }
+    // set level(inputLevel) { this._level = inputLevel; }
 }

@@ -36,8 +36,8 @@ describe('Rank Spec', () => {
     describe('Player has a level', () => {
         it('should return 1 for default level', () => {
             expect(defender.rank.level).to.equal(1);
-        })
-    })
+        });
+    });
 
     describe('Player can level up after 1000 xp', () => {
         it('should level up the player', () => {
@@ -48,7 +48,7 @@ describe('Rank Spec', () => {
 
             expect(newLevel).to.be.greaterThan(originalLevel);
         });
-    })
+    });
 
     describe('Check player\'s level', () => {
         it('should check the level when xp is gained', () => {
@@ -63,6 +63,20 @@ describe('Rank Spec', () => {
             let newLevel = attacker.rank.level;
 
             expect(newLevel).to.be.greaterThan(originalLevel);
-        })
-    })
+        });
+    });
+
+    describe('MaxHp increases on level up', () => {
+        it('should add 5 to MaxHp on level up', () => {
+            let hpAfterLevelTwo = 10;
+            attacker.rank.xp = 999;
+
+            attackRoll.originalRoll = 11;
+            attackRoll.modifiedRoll = 11;
+            
+            fight.attack(defender, attackRoll, attacker);
+
+            expect(attacker.hitPoints.maxHP).to.equal(hpAfterLevelTwo);
+        });
+    });
 });
