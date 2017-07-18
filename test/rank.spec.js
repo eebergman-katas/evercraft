@@ -3,15 +3,16 @@ import Combat from '../src/js/combat';
 import { AttackRoll } from '../src/js/dice';
 
 const expect = require('chai').expect;
+
 const xpFromOneAttack = 10;
 const rollHigherThanDefaultAC = 11;
 
 
 describe('Rank Spec', () => {
-    let defender,
-        attacker,
-        combat,
-        attackRoll;
+    let defender;
+    let attacker;
+    let combat;
+    let attackRoll;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');

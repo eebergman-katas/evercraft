@@ -1,18 +1,19 @@
+const expect = require('chai').expect;
+
 import Combat from '../src/js/combat';
 import Character from '../src/js/character';
 import { AttackRoll } from '../src/js/dice';
 
-const expect = require('chai').expect;
 
-const rollHigherThanDefaultAC = 11,
-    rollLowerThanDefaultAC = 9,
-    rollCriticalHit = 20;
+const rollHigherThanDefaultAC = 11;
+const rollLowerThanDefaultAC = 9;
+const rollCriticalHit = 20;
 
 describe('Combat Spec', () => {
-    let defender,
-        attacker,
-        attackRoll,
-        combat;
+    let defender;
+    let attacker;
+    let attackRoll;
+    let combat;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
@@ -21,10 +22,10 @@ describe('Combat Spec', () => {
         combat = new Combat();
     });
 
-    describe('can Attack', () => {
+    describe('Character can attack', () => {
         it('should land a hit if the roll is greater than the enemy\'s armorClass', () => {
-            let combatants = {},
-                postAttackHitPoints = 0;
+            let combatants = {};
+            let postAttackHitPoints = 0;
 
             combatants = combat.attack(attacker, defender, rollHigherThanDefaultAC);
             postAttackHitPoints = combatants.defender.hitPoints.currentHP;
@@ -33,8 +34,7 @@ describe('Combat Spec', () => {
         });
     });
 
-    describe('can be damaged', () => {
-
+    describe('Character can be damaged', () => {
         it('should reduce defender hitPoints if attacker lands hit', () => {
             let initalHitPoints = defender.hitPoints.currentHP;
 

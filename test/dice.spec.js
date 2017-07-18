@@ -2,19 +2,17 @@ import { AttackRoll } from '../src/js/dice';
 import Character from '../src/js/character';
 
 const expect = require('chai').expect;
-const sinon = require('sinon');
+
 const rollHigherThanDefaultAC = 11;
 
 describe('Dice Spec', () => {
-    let attackRoll,
-    attacker;
+    let attackRoll;
+    let attacker;
 
     beforeEach(() => {
         attackRoll = new AttackRoll();
         attacker = new Character("Liz", "Good");
     });
-
-    // idea: opportunity to use sinon for reals
 
     describe('Roll dice', () => {
         it('should return a number between 1 and 20 for a d20', () => {
@@ -22,10 +20,10 @@ describe('Dice Spec', () => {
         });
     });
 
-    describe('Is a roll needed', () => {
+    describe('Is a roll needed?', () => {
         it('should check if roll was input by user', () => {
             let randomRoll = (attackRoll.isARollNeeded()).originalRoll;
-            
+
             expect(randomRoll).to.be.within(1, 20);
         });
     });
@@ -35,8 +33,7 @@ describe('Dice Spec', () => {
             let attackRollPlusTwoLevels = 13;
             attacker.rank.level = 3;
 
-            attackRoll = attackRoll.rollForAttack(attacker, 
-                rollHigherThanDefaultAC);
+            attackRoll = attackRoll.rollForAttack(attacker, rollHigherThanDefaultAC);
 
             expect(attackRoll.modifiedRoll).to.equal(attackRollPlusTwoLevels);
         });

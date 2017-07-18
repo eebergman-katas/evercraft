@@ -3,12 +3,12 @@ import Abilities from '../src/js/abilities';
 
 const expect = require('chai').expect;
 
-const defaultArmorClass = 10,
-    defaultHitPoints = 5;
+const defaultArmorClass = 10;
+const defaultHitPoints = 5;
 
 describe('Character Spec', () => {
-    let defender,
-        attacker;
+    let defender;
+    let attacker;
 
     beforeEach(() => {
         defender = new Character('Danni', 'Good');
@@ -22,10 +22,10 @@ describe('Character Spec', () => {
     });
 
     describe('Character Alignment', () => {
-        let george = new Character('George', 'Good');
+        let goodCharacter = new Character('George', 'Good');
 
         it('should set alignment from alignment input (Good)', () => {
-            expect(george.alignment).to.equal('Good');
+            expect(goodCharacter.alignment).to.equal('Good');
         });
 
         it("should disallow alignments other than 'Evil', 'Good', and 'Neutral'", () => {
@@ -45,44 +45,32 @@ describe('Character Spec', () => {
 
 
     describe('Dexterity modifies Armor Class', () => {
-        let player;
-
-        beforeEach(() => {
-            player = new Character('Shaggy', 'Good');
-        });
-
         it('should add the dex modifier to the armor class', () => {
-            player.abilities.dexterity = 20;
+            defender.abilities.dexterity = 20;
 
-            expect(player.armorClass).to.equal(15);
+            expect(defender.armorClass).to.equal(15);
         });
 
         it('should disallow the armorClass to go below 10', () => {
-            player.abilities.dexterity = 1;
+            defender.abilities.dexterity = 1;
 
-            expect(player.armorClass).to.equal(10);
+            expect(defender.armorClass).to.equal(10);
         });
     });
 
     describe('Constitution modifies hit points', () => {
-        let player;
-
-        beforeEach(() => {
-            player = new Character('Shaggy', 'Good');
-        });
-
         it('should add the const modifier to the default hitpoints', () => {
-            player.abilities.constitution = 20;
-            player.hitPoints.adjustedMaxHP(player);
+            defender.abilities.constitution = 20;
+            defender.hitPoints.adjustedMaxHP(defender);
 
-            expect(player.hitPoints.maxHP).to.equal(10);
+            expect(defender.hitPoints.maxHP).to.equal(10);
         });
 
         it('should disallow the HitPoints maxHP to go below 1', () => {
-            player.abilities.constitution = 1;
-            player.hitPoints.adjustedMaxHP(player);
+            defender.abilities.constitution = 1;
+            defender.hitPoints.adjustedMaxHP(defender);
 
-            expect(player.hitPoints.maxHP).to.equal(1);
+            expect(defender.hitPoints.maxHP).to.equal(1);
         });
     });
 });
